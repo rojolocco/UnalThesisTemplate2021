@@ -1,0 +1,107 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%									TESIS DE DOCTORADO
+%							  CHRISTIAN FABIAN GARCIA ROMERO
+%							 UNIVERSIDAD NACIONAL DE COLOMBIA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% INTRODUCCIÓN DE LOS PARÁMETROS DEL DOCUMENTO LATEX
+
+\input{Encabezado}
+\singlespacing
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% INTRODUCCIÓN DEL ENCABEZADO DE LA TESIS HASTA LA TABLA DE CONTENIDO
+
+\begin{document}
+\frontmatter
+\include{0_Titulos/Titulos}
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% DEFINICIÓN DE LOS NOMBRES DE LAS TABLAS DE CONTENIDO
+
+\renewcommand{\contentsname}{Contenido}
+
+\renewcommand{\tablename}{\textbf{Tabla}}
+\renewcommand{\figurename}{\textbf{Figura}}
+%\renewcommand{\lstlistingname}{Código}
+
+\renewcommand{\listtablename}{Lista de Tablas}
+\renewcommand{\listfigurename}{Lista de Figuras}
+%\renewcommand{\lstlistlistingname}{Lista de Código}
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% LISTAS DE CONTENIDO, FIGURAS, TABLAS
+
+\onehalfspacing
+\tableofcontents\thispagestyle{empty}
+
+\listoffigures\thispagestyle{empty}
+\addcontentsline{toc}{chapter}{\numberline{}Lista de Figuras}
+
+% \listoftables\thispagestyle{empty}
+% \addcontentsline{toc}{chapter}{\numberline{}Lista de Tablas}
+
+% \listofalgorithms\thispagestyle{empty}
+% \addcontentsline{toc}{chapter}{\numberline{}Lista de Algoritmos}
+
+% \lstlistoflistings\thispagestyle{empty}
+% \addcontentsline{toc}{chapter}{\numberline{}Lista de Código}
+
+\include{4_Simbolos/Tab_Simbolos}
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% ADICIÓN DE LOS CAPÍTULOS Y ANEXOS
+
+\mainmatter
+\newgeometry{twoside,top=24mm,right=24mm,bottom=24mm,left=34mm}
+\baselineskip=11pt
+\onehalfspacing
+
+\include{Kap_01/Kap_01}
+\include{Kap_02/Kap_02}
+\include{Kap_03/Kap_03}
+% \include{Kap_04/Kap_04}
+% \include{Kap_05/Kap_05}
+% \include{Kap_06/Kap_06}
+% \include{Kap_07/Kap_07}
+% \include{Kap_08/Kap_08}
+% \include{Kap_09/Kap_09}
+% \include{Kap_10/Kap_10}
+
+\appendix
+\include{Kap_Anexos/Anexos}
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% BIBLIOGRAFÍA
+
+\addcontentsline{toc}{chapter}{\numberline{}Bibliografía}
+\bibliography{3_BIB/zotero.bib}
+%----------------------------------------------------------------------------------------
+
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

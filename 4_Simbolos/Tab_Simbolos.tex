@@ -1,0 +1,75 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%									TESIS DE DOCTORADO
+%							  CHRISTIAN FABIAN GARCIA ROMERO
+%							 UNIVERSIDAD NACIONAL DE COLOMBIA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% LISTA DE SÍMBOLOS
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% INCLUIR LA LISTA DE SÍMBOLOS EN LA TABLA DE CONTENIDO
+\chapter*{Lista de Símbolos}~\hypertarget{ch:ToS}{}
+\label{ch:ToS}
+\markboth{Lista de Símbolos}{}
+
+% \ihead{\nomenclature}
+\addcontentsline{toc}{chapter}{\numberline{}Lista de Símbolos}
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% PARRAGRAFO INICIAL
+En esta sección se encuentra una lista detalla de los símbolos, subíndices, superíndices y abreviaturas utilizadas en este documento.
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+\small
+\onehalfspacing
+% \printglossaries
+
+
+% SECCIÓN DE SÍMBOLOS CON LETRAS LATINAS 
+\setglossarystyle{symbunitlong}
+\printglossary[type=symbolsLAT]
+\vspace{0.5cm}
+
+
+% SECCIÓN DE SÍMBOLOS CON LETRAS GRIEGAS
+\printglossary[type=symbolsGRI]
+\vspace{0.5cm}
+
+
+% % SECCIÓN DE SUBÍNDICES
+\printglossary[type=subIndx, style=long]
+\vspace{0.5cm}
+
+
+% % % SECCIÓN DE SUPERÍNDICES
+% \printglossary[type=supIndx, style=long]
+% \vspace{0.5cm}
+
+
+% % SECCIÓN DE SIGLAS EN INGLES
+\printglossary[type=siglas, style=long, title=Abreviaturas en ingles]
+\vspace{0.5cm}
+
+
+% % SECCIÓN DE SIGLAS EN ESPAÑOL
+% \printglossary[type=\acronymtype, style=long, title=Abreviaturas en español]
+
+
+%----------------------------------------------------------------------------------------

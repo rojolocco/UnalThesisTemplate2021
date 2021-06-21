@@ -1,0 +1,805 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%									TESIS DE DOCTORADO
+%							  CHRISTIAN FABIAN GARCIA ROMERO
+%							 UNIVERSIDAD NACIONAL DE COLOMBIA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% ANEXO A
+\pagestyle{fancy}
+\chapter{Modelos Matemáticos Físicos}~\hypertarget{ch:anexoA}{}
+\label{ch:anexoA}
+\thispagestyle{empty}
+
+
+%----------------------------------------------------------------------------------------
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN A.1
+\section{Modelo de flujo de fluidos}~\hypertarget{sec:anexo_A10}{}
+\label{sec:anexo_A10}
+
+
+La ecuación de difusividad hidráulica es la que rige el movimiento de fluidos en un medio poroso. Esta ecuación se basa en los mismos principios de conservación de masa expuesto por \citep{moukalled_finite_2016}. Según Moukalled la ecuación de conservación general se puede expresar:\bigskip
+
+
+%========================================================================================
+% ECUACIÓN A.1
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA1} 
+\underbrace{\frac{\partial (\rho \phi)}{\partial t}}_\text{Termino Transitorio} + \underbrace{\nabla \cdot(\rho \mathbf{\{v\}}\phi)}_\text{Termino Convectivo} = \underbrace{\nabla \cdot (\Gamma \nabla \phi)}_\text{Termino Difusivo} + \underbrace{Q^{\phi}}_\text{Termino Fuente}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+\bigskip
+donde (\gls{densidad}) es la densidad del fluido, (\gls{velInfiltracion}) es la velocidad de infiltración del fluido, (\gls{coeficienteDifusividad}) es el coeficiente de difusividad, (\gls{var}) es la variable a resolver y (\gls{terminoFuente}) es un termino fuente de adición o sustracción de fluido en el contorno de estudio. Para el flujo en medios porosos se asume: (1) La variable a resolver es la carga hidráulica (\gls{var} $=$ \gls{cargaHidraulica}); (2) El coeficiente de difusividad es igual a la conductividad hidráulica (\gls{coeficienteDifusividad} $=$ \gls{conductividad}); (3) La velocidad de infiltración cumple la Ley de Darcy.\bigskip
+
+La \Glsbf{ecu} \textbf{\ref{eq:equA1}} no tiene ningún termino de acoplamiento con otras físicas (i.e. Esfuerzo- Deformación, Transferencia de calor, Reacciones químicas). Por lo tanto, es necesario aplicar una serie de substituciones.\bigskip
+
+\bigskip
+\textbf{A. Volumen de fases liquidas y gaseosas}
+\\
+En un medio poroso pueden existir en sus vacíos distintos fluidos con distintas fases (i.e. liquido o gaseoso), el volumen que ocupa cada fase en el volumen poroso se puede expresar como:
+
+
+%========================================================================================
+% ECUACIÓN A.2
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA2} 
+V_i = S_i V_p = \frac{m_i}{\rho_i}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{volumenFaseI}) es el volumen de la fase \gls{FaseI}, (\gls{saturacionFaseI}) es el grado de saturación de la fase $i$, (\gls{volumenPoroso}) es el volumen poroso del medio, (\gls{masaFaseI}) es la masa de la fase $i$, (\gls{densidadFaseI}) es la densidad de la fase $i$.\bigskip
+
+
+\bigskip
+\textbf{B. Factor Volumen Formación}
+\\
+Cuando un medio poroso se encuentra en condiciones de presión y temperatura, como las que experimenta un estrato de rocas en un reservorio de hidrocarburos, los fluidos se consideran compresibles y se hace necesario introducir el \textit{Factor Volumen Formación (\gls{fvf})}. Este factor hace referencia a la razón del volumen del fluido en condiciones estándar respecto al volumen en condiciones \textit{in-situ} \footnote{Según el "\textit{American Petroleum Institute - (API)}", las condiciones estándar de temperatura y presión son el conjunto de condiciones en que los fluidos de un reservorio se encuentran en la superficie. La temperatura estándar es $60^\circ F$ ($15.56^\circ C$) y la presión estándar es $1\ atm$ ($101.35\ kPa$)}. Por lo tanto:
+
+%========================================================================================
+% ECUACIÓN A.3
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA3} 
+B_i = \frac{\text{Volumen en condiciones estándar (I)}}{\text{Volumen en condiciones \textit{in-situ} (i)}}
+\end{gather} 
+\end{ceqn}
+%========================================================================================-
+
+es decir:
+
+%========================================================================================
+% ECUACIÓN A.4
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA4} 
+B_i = \frac{V_{I}}{V_{i}} = \frac{\rho_{I}}{\rho_{i}} \to \frac{1}{\rho_{i}} = \frac{B_i}{\rho_{I}} 
+\end{gather} 
+\end{ceqn}
+%========================================================================================--
+ 
+ Reemplazando la \Glsbf{ecu} \textbf{\ref{eq:equA4}} en la \Glsbf{ecu} \textbf{\ref{eq:equA2}}, se obtiene:
+ 
+ 
+%========================================================================================
+% ECUACIÓN A.5
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA5} 
+V_i = S_i V_p = \frac{m_i B_i}{\rho_I}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+
+\bigskip
+\textbf{C. Derivada en el tiempo del volumen poroso}
+\\
+Derivando en el tiempo la \Glsbf{ecu} \textbf{\ref{eq:equA5}} y utilizando la regla de la cadena se obtiene:
+
+
+%========================================================================================
+% ECUACIÓN A.6
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA6} 
+\rho_I [V_p \dot{S_i} + S_i \dot{V_p}] = m_i \dot{B_i} + B_i \dot{m_i}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+Despejando $\dot{V_p}$, se obtiene:
+
+%========================================================================================
+% ECUACIÓN A.7
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA7} 
+\rho_I S_i \dot{V_p} = m_i \dot{B_i} + B_i \dot{m_i} - \rho_I V_p \dot{S_i}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+\bigskip
+\textbf{D. Porosidad}
+\\
+La porosidad (\gls{porosidad}) es la razón entre el volumen poroso y el volumen total o también llamado \textit{Volumen Bulk} (\gls{volumenBulk}). Por lo tanto la \Glsbf{ecu} \textbf{\ref{eq:equA5}} se puede expresar como:
+
+%========================================================================================
+% ECUACIÓN A.8
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA8} 
+\frac{m_i}{V_b} = \phi\frac{\rho_I S_i}{B_i}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+Dividiendo todos los términos de la \Glsbf{ecu} \textbf{\ref{eq:equA7}} por el volumen total, reemplazando la \Glsbf{ecu} \textbf{\ref{eq:equA5}} y despejando ($\dot{m_i}/V_p$), se obtiene:
+
+
+%========================================================================================
+% ECUACIÓN A.9
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA9} 
+\frac{\dot{m_i}}{V_b} = \rho_I \frac{S_i}{B_i}\frac{\dot{V_p}}{V_b} +  \frac{\rho_I\phi}{B_i}\dot{S_i} - \frac{\phi\rho_I S_i}{B_i^2}\dot{B_i}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+o de manera simplificada:
+
+%========================================================================================
+% ECUACIÓN A.10
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA10} 
+\frac{\dot{m_i}}{V_b} = \rho_I \frac{S_i}{B_i}\frac{\dot{V_p}}{V_b} +  \rho_I\phi\frac{\partial}{\partial t}\left[\frac{S_i}{B_i}\right]
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+
+\bigskip
+\textbf{E. Balance volumétrico}
+\\
+El balance volumétrico se puede obtener de la \Glsbf{ecu} \textbf{\ref{eq:equA1}}, despreciando el termino convectivo y el termino fuente. Por otra parte, el termino difusivo es igual al flujo de masa de la fase $i$, por lo tanto:
+
+%========================================================================================
+% ECUACIÓN A.11
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA11} 
+\nabla (\rho_I \{\boldsymbol v_i\}) + \frac{\dot{m_i}}{V_b} = 0
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{velInfiltracionFaseI}), es la velocidad de infiltración de la Ley de Darcy:
+
+%========================================================================================--
+% ECUACIÓN A.12
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA12} 
+\{\boldsymbol v_i\} = -\frac{\mathbf{[K]} k_{ri}}{\mu_{i}B_{i}} (\nabla p_i - \rho_{i}\{ \boldsymbol g\})
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+En esta ecuación (\gls{tensorK}) es el tensor de permeabilidad intrínseca, (\gls{permRelativaFaseI}) es la permeabilidad relativa de la fase $i$, (\gls{viscosidadFaseI}) es la viscosidad dinámica de la fase $i$, (\gls{presionPorosFaseI}) es la presión de poros de la fase $i$, (\gls{gravedad}) es el vector de aceleración de la gravedad, (\gls{densidadFaseI}) es la densidad de la fase $i$ en condiciones estándar. Reemplazando las \textbf{Ecuaciones} \textbf{\ref{eq:equA10}} y \textbf{\ref{eq:equA12}} en la \textbf{\ref{eq:equA11}}, se obtiene:\bigskip
+
+%========================================================================================
+% ECUACIÓN A.13
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA13} 
+\nabla\cdot \left[ -\rho_I\frac{[\mathbf{K}] k_{ri}}{\mu_{i}B_{i}} (\nabla p_i - \rho_{i}\{\boldsymbol g\}) \right] + \rho_I \frac{S_i}{B_i}\frac{\dot{V_p}}{V_b} +  \rho_I\phi\frac{\partial}{\partial t}\left[\frac{S_i}{B_i}\right] = 0
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+
+\bigskip\bigskip
+\textbf{F. La razón de cambio del volumen poroso}
+\\
+Según \citep{pao_fully_2001} la razón de cambio del volumen poroso es función de la deformación volumétrica (\gls{deformacionVol}), del cambio de la presión de poros promedio (\gls{presionMedia}) y de los cambios en la temperatura (\gls{temperatura}), según lo expresado en la siguiente ecuación:
+
+%========================================================================================
+% ECUACIÓN A.14
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA14} 
+\frac{\dot{V_p}}{V_b} = \frac{\alpha - \phi}{K_s} \frac{\partial \overline{p}}{\partial t}  + \alpha \frac{\partial \epsilon_v}{\partial t} - (\alpha - \phi)\frac{\beta_s}{3} \frac{\partial T}{\partial t} 
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{coeficienteBiot}) es el coeficiente de Biot, (\gls{coeficienteVolSolidos}) es el coeficiente de deformación volumétrica de los sólidos del medio, (\gls{coeficienteExpansionSolidos}) es el coeficiente de expansión térmica de los solidos. Reemplazando la \Glsbf{ecu} \textbf{\ref{eq:equA14}}  en la \Glsbf{ecu} \textbf{\ref{eq:equA13}}, se obtiene:
+
+%========================================================================================
+% ECUACIÓN A.15
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA15} 
+\nabla\cdot \left[ \frac{[\mathbf{K}] k_{ri}}{\mu_{i}B_{i}} (\nabla p_i - \rho_{i}\{\boldsymbol g\}) \right] = \frac{S_i}{B_i} \left[ \frac{\alpha - \phi}{K_s} \frac{\partial \overline{p}}{\partial t}  + \alpha \frac{\partial \epsilon_v}{\partial t} - (\alpha - \phi)\frac{\beta_s}{3} \frac{\partial T}{\partial t} \right] + \phi\frac{\partial}{\partial t}\left[\frac{S_i}{B_i}\right]
+\end{gather} 
+\end{ceqn}
+%========================================================================================-
+
+
+\bigskip\bigskip
+\textbf{G. Ecuación general de la difusividad hidráulica}
+\\
+Un tipo de fase que puede existir en el volumen poroso es la fase gaseosa. Se debe tomar en cuenta que cierta parte de la fase gaseosa puede estar en disolución en la fase liquida por lo tanto la \Glsbf{ecu} \textbf{\ref{eq:equA15}} se puede escribir como:
+
+%========================================================================================
+% ECUACIÓN A.16
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA16} 
+\nabla\cdot \{T_{ij}\} =
+\lambda_{ij} \frac{(\alpha - \phi)}{K_s}\frac{\partial \overline{p}}{\partial t} + \alpha \lambda_{ij} \frac{\partial \epsilon_{v}}{\partial t} - \lambda_{ij}(\alpha - \phi)\frac{\beta_s}{3}\frac{\partial T}{\partial t} + \phi \frac{\partial \lambda_{ij}}{\partial t}
+\end{gather} 
+\end{ceqn}
+%========================================================================================-
+
+donde:
+
+%========================================================================================
+% ECUACIÓN A.17
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equA17} 
+\begin{gather}
+\{T_{ij}\} = [\mathbf{K}]\frac{k_{ri}}{\mu_{i} B_{i}} (\nabla p_i - \rho_{i}\{\boldsymbol g\}) + R_{s-ij} [\mathbf{K}] \frac{k_{rj}}{\mu_{j} B_{j}} (\nabla p_j - \rho_{j}\{\boldsymbol g\})   
+\label{eq:equA17a} \\[10pt]
+\lambda_{ij} = \frac{S_i}{B_i} + R_{s-ij}\frac{S_j}{B_j}
+\label{eq:equA17b}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{solubilidadFaseI}) es la razón de solubilidad de un gas $i$ en un líquido \gls{FaseJ}. Por definición la razón de solubilidad es la razón entre el volumen de gas disuelto en condiciones estándar y el volumen de líquido en condiciones estándar:\bigskip
+
+%========================================================================================
+% ECUACIÓN A.18
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA18} 
+R_{s-ij} = \frac{\text{Volumen de gas i en condiciones estándar}}{\text{Volumen de liquido j en condiciones estandar}}
+\end{gather} 
+\end{ceqn}
+%========================================================================================--
+
+Cuando no hay gas disuelto en ningún liquido del medio poroso, la razón de solubilidad es igual a cero y la \Glsbf{ecu} \textbf{\ref{eq:equA16}} se transforma en la \Glsbf{ecu} \textbf{\ref{eq:equA15}}. Para mayor información sobre este parámetro y el factor volumen formación se sugiere consultar \citep{aziz_petroleum_1979,abou-kassem_petroleum_2020}.\bigskip
+
+\bigskip
+\textbf{H. Aplicabilidad a suelos}
+\\
+Todo el desarrollo anterior es aplicable a medios porosos que se encuentren en condiciones de alta presión, como se encuentran los reservorios de hidrocarburos. La aplicabilidad de la \Glsbf{ecu} \textbf{\ref{eq:equA16}} a los suelos es la misma pero hay que adoptar unas simplificaciones: (1) Como los fluidos en un suelo se consideran incompresibles el factor volumen formación es igual a 1; (2) En suelos parcialmente saturados se puede considerar que el aire disuelto en el agua es despreciable y por lo tanto la razón de solubilidad es igual a cero. Por lo tanto la \Glsbf{ecu} \textbf{\ref{eq:equA16}} se transforma en:
+%========================================================================================
+% ECUACIÓN A.19
+
+\begin{equation} 
+\label{eq:equA19}
+\begin{split}
+\nabla\cdot \left[ \frac{[\mathbf{K}] k_{ri}}{\mu_{i}} (\nabla p_i - \rho_{i}\{g\}) \right] =& \quad S_i \left[ \frac{\alpha - \phi}{K_s} \frac{\partial \overline{p}}{\partial t}  + \alpha \frac{\partial \epsilon_v}{\partial t} - (\alpha - \phi)\frac{\beta_s}{3} \frac{\partial T}{\partial t} \right] \\[10pt]
+&+ \phi\frac{S_i}{K_i}\frac{\partial p_i}{\partial t} + \phi\frac{\partial S_i}{\partial t}
+\end{split} 
+\end{equation}
+%========================================================================================-
+
+\bigskip
+donde (\gls{coeficienteVolFaseI}) es el modulo de compresibilidad volumétrico de la fase i. Esta es la ecuación de la difusividad hidráulica para suelos parcialmente saturados. Las \textbf{Ecuaciones} \textbf{\ref{eq:equA16}} y \Glsbf{ecu} \textbf{\ref{eq:equA19}} , rigen el modelo de flujo de fluidos en medios porosos. Cabe aclarar que estas ecuaciones rigen tanto el flujo de una fase (i.e flujo monofásico), como el flujo de dos fases (i.e flujo bifásico) y el flujo de más de dos fases (i.e flujo multifasico). Finalmente, la \Glsbf{ecu} \textbf{\ref{eq:equA16}} se puede expresar para suelos y rocas como:
+
+%========================================================================================
+% ECUACIÓN A.20
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA20} 
+\underbrace{\nabla\cdot \{T_{ij}\}}_\text{Termino Difusivo} = \underbrace{\lambda_{ij} \frac{(\alpha - \phi)}{K_s}\frac{\partial \overline{p}}{\partial t} + \phi \frac{\partial \lambda_{ij}}{\partial t}}_\text{Termino Transitorio} +\underbrace{\alpha \lambda_{ij} \frac{\partial \epsilon_{v}}{\partial t} - \lambda_f(\alpha - \phi)\frac{\beta_s}{3}\frac{\partial T}{\partial t}}_\text{Termino de Acoplamiento}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+y similarmente la \Glsbf{ecu} \textbf{\ref{eq:equA19}} para suelo como:
+\vspace{0.2cm}
+
+%========================================================================================
+% ECUACIÓN A.21
+
+\begin{equation} 
+\label{eq:equA21}
+\begin{split}
+\underbrace{\nabla\cdot \left[ \frac{[\mathbf{K}] k_{ri}}{\mu_{i}} (\nabla p_i - \rho_{i}\{g\}) \right]}_\text{Termino Difusivo} =& \quad \underbrace{S_i\frac{\alpha - \phi}{K_s} \frac{\partial \overline{p}}{\partial t} + \phi\frac{S_i}{K_i}\frac{ \partial p_i}{\partial t} + \phi\frac{\partial S_i}{\partial t}}_\text{Termino Transitorio} \\[10pt]
+&+ \underbrace{\alpha S_i \frac{\partial \epsilon_v}{\partial t} - (\alpha - \phi)\frac{\beta_s}{3} S_i \frac{\partial T}{\partial t}}_\text{Termino de Acoplamiento}
+\end{split} 
+\end{equation}
+%========================================================================================
+
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN A.2
+\section{Modelo de esfuerzo-deformación}~\hypertarget{sec:anexo_A20}{}
+\label{sec:anexo_A20}
+
+
+El comportamiento mecánico de un medio poroso está determinado por la ecuación de esfuerzo-deformación o también llamada ecuación geomecánica. Este modelo permite determinar: (1) Deformaciones; (2) Esfuerzos; (3) Desplazamientos. El modelo geomecánico de un medio poroso se rige por las mismas ecuaciones que definen los medios continuos, como lo son las ecuaciones de equilibrio, compatibilidad de deformaciones y las relaciones constitutivas.\bigskip
+
+
+\textbf{A. Ecuación de Equilibrio}
+\\
+La ecuación que gobierna el equilibrio entre fuerzas internas y externas de un material sólido se denomina ecuación de equilibrio \citep{shabana_computational_2011}. Esta se define en 3-Dimensiones como:\bigskip
+
+%========================================================================================
+% ECUACIÓN A.22
+
+\begin{ceqn} 
+\begin{subequations} 
+\label{eq:equA22} 
+\begin{gather}
+\frac{\partial\sigma_{xx}}{\partial x} + \frac{\partial\tau_{xy}}{\partial y} + \frac{\partial\tau_{xz}}{\partial z} + b_x = 0 \label{eq:equA22a} \\[3pt]
+\frac{\partial\sigma_{yy}}{\partial y} + \frac{\partial\tau_{xy}}{\partial x} + \frac{\partial\tau_{yz}}{\partial z} + b_y = 0 \label{eq:equA22b}\\[3pt]
+\frac{\partial\sigma_{zz}}{\partial z} + \frac{\partial\tau_{xz}}{\partial x} + \frac{\partial\tau_{yz}}{\partial y}+ b_z = 0 \label{eq:equA22c}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{esfuerzoNormal}) es el esfuerzo normal, (\gls{esfuerzoCortante}) es el esfuerzo cortante, (\gls{fuerzaCuerpo}) las fuerzas de cuerpo. De la ecuación anterior se puede definir en notación de \textit{Voigt} \citep{koutromanos_fundamentals_2018}:
+
+%========================================================================================
+% ECUACIÓN A.23
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equA23} 
+\begin{gather}
+[\boldsymbol\sigma] = 
+      \begin{bmatrix}
+      \sigma_{xx} &  \tau_{xy}   &  \tau_{xz}    \\[0.3em]
+      \tau_{xy}   &  \sigma_{yy} &  \tau_{yz}    \\[0.3em]
+      \tau_{xz}   &  \tau_{yz}   &  \sigma_{zz}
+      \end{bmatrix} 
+      \rightarrow 
+\{\boldsymbol\sigma\}^T = 
+      \begin{Bmatrix} 
+      \sigma_{xx}
+      & \sigma_{yy}
+      & \sigma_{zz}
+      & \tau_{xy}
+      & \tau_{xz}
+      & \tau_{yz}
+      \end{Bmatrix} 
+      \label{eq:equA23a} \\[5pt]
+\{\mathbf{b}\} = 
+      \begin{Bmatrix}
+      b_{x} \\[0.2em]
+      b_{y} \\[0.2em]
+      b_{z}
+      \end{Bmatrix} 
+      \label{eq:equA23b} \\[5pt]
+\mathbf{L}^T = 
+      \begin{bmatrix}
+      \frac{\partial}{\partial x} & 0 & 0 & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} & 0 \\[0.3em]
+      0 & \frac{\partial}{\partial y} & 0 & \frac{\partial}{\partial x} & 0 & \frac{\partial}{\partial z} \\[0.3em]
+      0 & 0 & \frac{\partial}{\partial z} & 0 & \frac{\partial}{\partial x} & \frac{\partial}{\partial y}
+      \end{bmatrix}
+      \label{eq:equA23c} 
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+por lo tanto, la \Glsbf{ecu} \textbf{\ref{eq:equA23}} se puede escribir como:
+
+%========================================================================================
+% ECUACIÓN A.24
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA24} 
+\mathbf{L}^T\{\boldsymbol\sigma\} = \{\mathbf{b}\}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{operadorL}) es el operador diferencial de deformaciones, (\gls{esfuerzoTotal}) es el vector de esfuerzo total, (\gls{vectorFuerzasCuerpo}) es el vector de fuerzas de cuerpo. Esta ecuación gobierna el equilibrio de fuerzas internas y externas, de cualquier medio poroso ya sea en condiciones saturadas o parcialmente saturadas.\bigskip
+
+
+\textbf{B. Esfuerzo Efectivo}
+\\
+Usando la teoría de consolidación de Biot \citep{biot_general_1941}, el esfuerzo total puede expresarse como:
+
+%========================================================================================
+% ECUACIÓN A.25
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equA25} 
+\begin{gather}
+\sigma_{xx} = \sigma'_{xx} - \alpha \overline{p}  \label{eq:equA25a}   \\[1pt]
+\sigma_{yy} = \sigma'_{yy} - \alpha \overline{p}  \label{eq:equA25b}   \\[1pt]
+\sigma_{zz} = \sigma'_{zz} - \alpha \overline{p}  \label{eq:equA25c}   \\[1pt]
+\tau_{xy}   = \tau'_{xy} - 0 = \tau_{xy} \label{eq:equA25d} \\[1pt]
+\tau_{xz}   = \tau'_{xz} - 0 = \tau_{xy} \label{eq:equA25e} \\[1pt]
+\tau_{yz}   = \tau'_{yz} - 0 = \tau_{xy} \label{eq:equA25f}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{esfuerzoEfectivo}) es el esfuerzo efectivo, (\gls{presionMedia}) es la presión de poros media, (\gls{coeficienteBiot}) es el coeficiente de Biot. De la ecuación anterior podemos definir:
+
+%========================================================================================
+% ECUACIÓN A.26
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equA26} 
+\begin{gather}
+\{\boldsymbol\sigma'\}^T = 
+      \begin{Bmatrix} 
+      \sigma'_{xx}
+      & \sigma'_{yy}
+      & \sigma'_{zz}
+      & \tau'_{xy}
+      & \tau'_{xz}
+      & \tau'_{yz}
+      \end{Bmatrix} 
+      \label{eq:equA26a} \\[5pt]
+\{\mathbf{I}\}^T = 
+      \begin{Bmatrix}
+      1 & 1 & 1 & 0 & 0 & 0
+      \end{Bmatrix} 
+      \label{eq:equA26b} \\[10pt]
+\alpha = 
+      1 - \frac{\{\mathbf{I}\}^T[\mathbf{D}]\{\mathbf{I}\}}{9K_s}
+      \label{eq:equA26c}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+\bigskip
+Substituyendo las \textbf{Ecuaciones} \textbf{\ref{eq:equA23a}} y \textbf{\ref{eq:equA26}} en la \Glsbf{ecu} \textbf{\ref{eq:equA25}} se obtiene:
+
+%========================================================================================
+% ECUACIÓN A27
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA27} 
+\{\boldsymbol\sigma\} = \{\boldsymbol\sigma'\} - \alpha\{\mathbf{I}\}\overline{p} 
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{vectorEsfuerzosEfectivos}) es el vector de esfuerzos efectivos, (\gls{vectorIdentidad}) es el vector identidad, (\gls{matrizRigidez}) es la matriz de rigidez del modelo constitutivo, (\gls{coeficienteVolSolidos}) es el modulo de compresibilidad volumétrica de los solidos del medio.\bigskip
+
+
+\textbf{C. Relación Constitutiva Mecánica}
+\\
+Las relaciones constitutivas se escriben en forma general utilizando una definición incremental:
+
+%========================================================================================
+% ECUACIÓN A.28
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA28} 
+d{\boldsymbol\{\sigma'\}}=[\mathbf{D}] (d{\boldsymbol\{\epsilon\}} - d{\boldsymbol\{\epsilon_{T}\}})
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+
+donde (\gls{incrementoEsfuerzoEfectivo}) es el incremento del esfuerzo efectivo, (\gls{incrementoDeformaciones}) es el incremento de deformación total, (\gls{incrementoDeformacionesTemp}) es el incremento de deformación debido a la temperatura. Definiendo:
+
+%========================================================================================
+% ECUACIÓN A29
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equA29} 
+\begin{gather}
+\{\boldsymbol\epsilon\}^T = 
+      \begin{Bmatrix} 
+      \epsilon_{xx}
+      &\epsilon_{yy}
+      &\epsilon_{zz}
+      &\gamma_{xy}
+      &\gamma_{xz}
+      &\gamma_{yz}
+      \end{Bmatrix} 
+\label{eq:equA29a} \\[2pt]
+\{\boldsymbol\epsilon_{T}\} = \beta_s \frac{\{\mathbf{I}\}}{3}T
+\label{eq:equA29b}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+Donde (\gls{deformacionNormal}) es la deformación normal, (\gls{deformacionCortante}) es la deformación cortante, (\gls{coeficienteExpansionSolidos}) es el coeficiente de expansión térmica de los solidos.
+
+\bigskip
+\textbf{D. Compatibilidad de Deformaciones}
+\\
+La ecuación de compatibilidad de deformaciones, relaciona las deformaciones con los cambios en los desplazamientos del medio, y se define como \citep{shabana_computational_2011}:
+
+%========================================================================================
+% ECUACIÓN A30
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equA30} 
+\begin{gather}
+\epsilon_{xx} = \frac{\partial u_{xx}}{\partial x} 
+\label{eq:equA30a} \\[2pt]
+\epsilon_{yy} = \frac{\partial u_{yy}}{\partial y}
+\label{eq:equA30b} \\[2pt]
+\epsilon_{zz} = \frac{\partial u_{zz}}{\partial z}
+\label{eq:equA30c} \\[2pt]
+\gamma_{xy} = \frac{\partial u_{yy}}{\partial x} + \frac{\partial u_{xx}}{\partial y}
+\label{eq:equA30d} \\[2pt]
+\gamma_{xz} = \frac{\partial u_{zz}}{\partial x} + \frac{\partial u_{xx}}{\partial z}
+\label{eq:equA30e} \\[2pt]
+\gamma_{yz} = \frac{\partial u_{yy}}{\partial z} + \frac{\partial v_{zz}}{\partial y}
+\label{eq:equA30f}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+ donde (\gls{desplazamiento}) es de desplazamiento en las tres dimensiones. Utilizando las \textbf{Ecuaciones} \textbf{\ref{eq:equA23c}} y \textbf{\ref{eq:equA29}} en la \Glsbf{ecu} \textbf{\ref{eq:equA28}} y \textbf{\ref{eq:equA30}} se obtiene:
+
+%========================================================================================--
+% ECUACIÓN A31
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equA31} 
+\begin{gather}
+\{d\boldsymbol\epsilon\}=\mathbf{L} \{d\mathbf{u}\} 
+\label{eq:equA31a} \\[5pt]
+\{d\boldsymbol\sigma'\}=[\mathbf{D}]\mathbf{L}\{d\mathbf{u}\}
+\label{eq:equA31b}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{incrementoDesplazamiento}) es el vector de incremento en los desplazamientos.
+
+\bigskip
+\textbf{D. Ecuación General del Modelo Geomecánico}
+\\
+Se puede obtener una ecuación general, para cualquier situación, ya sea para un suelo o roca, en condiciones saturadas o parcialmente saturadas. Combinando las  \textbf{Ecuaciones} \textbf{\ref{eq:equA24}}, \textbf{\ref{eq:equA27}} y \textbf{\ref{eq:equA31b}} se obtiene:
+
+%========================================================================================
+% ECUACIÓN A.32
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA32} 
+\underbrace{\mathbf{L}^T [\boldsymbol D] \mathbf{L} \{\boldsymbol u\}}_\text{Termino Fuerzas Internas} \quad - \quad  \underbrace{\alpha\nabla\overline{p} -  \frac{\beta_s}{3}\mathbf{L}^T[\boldsymbol D]\{\mathbf{I}\}T}_\text{Termino de Acoplamiento} \quad = \underbrace{\{\boldsymbol b\}}_\text{Termino Fuerzas de Cuerpo}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+donde:
+
+%========================================================================================
+% ECUACIÓN A.33
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equA33} 
+\begin{gather}
+\nabla^T = 
+      \begin{Bmatrix} 
+      \partial / \partial x
+      &\partial / \partial y
+      &\partial / \partial z
+      \end{Bmatrix} 
+      \label{eq:equA33a} \\[5pt]
+\nabla = \mathbf{L}^T \{\boldsymbol I\}
+      \label{eq:equA33b} 
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN A.3
+\section{Modelo de transferencia de calor}~\hypertarget{sec:anexo_A30}{}
+\label{sec:anexo_A30}
+
+
+Igual que la ecuación de la difusividad hidráulica del ~\MYhref[blue]{ch:anexo_A10}{Anexo A.1}, la ecuación de energía se basa en los mismos principios de la conservación de la masa \citep{moukalled_finite_2016}. Para la difusividad de la energía térmica la \Glsbf{ecu} \textbf{\ref{eq:equA1}} se puede expresar como:\bigskip
+
+
+%========================================================================================
+% ECUACIÓN A.34
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA34} 
+\underbrace{\frac{\partial (\overline{\rho_i} C T)}{\partial t}}_\text{Termino Transitorio} + \underbrace{\nabla \cdot(\rho C_i \mathbf{\{v_i\}} T)}_\text{Termino Convectivo} = \underbrace{\nabla \cdot (\lambda \nabla T)}_\text{Termino Difusivo} + \underbrace{Q^{T}}_\text{Termino Fuente}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+\bigskip
+donde (\gls{densidadMedia}) es la densidad promedio, (\gls{densidadFaseI}) es la densidad de la fase $i$, (\gls{capacidadFaseI}) es la capacidad calórica especifica de la fase $i$, (\gls{velInfiltracionFaseI}) es la velocidad de infiltración de la fase $i$, (\gls{conductividadTemp}) es el coeficiente de conductividad térmica, (\gls{terminoFuenteTemp}) es un termino fuente de adición o sustracción de calor en el contorno de estudio, (\gls{temperatura}) es la temperatura.\bigskip
+
+
+El termino transitorio depende de las fases que existan en el volumen poroso. Para un modelo donde existan fases liquidas y fases gaseosas se puede despreciar el aporte de las fases gaseosas ya que la densidad del gas es mucho menor a la densidad de un liquido. En modelo bifásico, se puede establecer con la siguiente expresión:
+
+%========================================================================================
+% ECUACIÓN A.35
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA35} 
+\overline{\rho} C T = (1-\phi)\rho_s C_s T + \phi S_i \rho_i C_i T
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{porosidad}) es la porosidad del medio, (\gls{densidadSolidos}) es la densidad de los solidos del medio, (\gls{capacidadSolidos}) es la capacidad calórica especifica de los solidos del medio, (\gls{saturacionFaseI}) es la saturación de la fase $i$, (\gls{densidadFaseI}) es la densidad de la fase $i$, (\gls{capacidadFaseI}) es la capacidad calórica especifica de la fase $i$.\bigskip
+
+La \Glsbf{ecu} \textbf{\ref{eq:equA35}} es función de la presión de poros promedio, la presión de poros de los fluidos, la saturación de los fluidos, la capacidad calórica especifica de los fluidos y la temperatura. Es decir:
+
+
+%========================================================================================
+% ECUACIÓN A.36
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equA36} 
+\overline{\rho} C T = \Psi = f(\overline{p}, p_i, S_i, C_s, C_i, T)
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+Derivando la \Glsbf{ecu} \textbf{\ref{eq:equA36}} por el tiempo y utilizando la regla de la cadena se obtiene:
+
+
+%========================================================================================
+% ECUACIÓN A.37
+
+\begin{ceqn} 
+\begin{gather} 
+\label{eq:equA37} 
+\frac{\partial \Psi}{\partial t} = \frac{\partial \Psi}{\partial \overline{p}} \frac{\partial \overline{p}}{\partial t} + \frac{\partial \Psi}{\partial p_i} \frac{\partial p_i}{\partial t}  + \frac{\partial \Psi}{\partial S_i} \frac{\partial S_i}{\partial t} + \frac{\partial \Psi}{\partial C_s} \frac{\partial C_s}{\partial T}\frac{\partial T}{\partial t} + \frac{\partial \Psi}{\partial C_i} \frac{\partial C_i}{\partial T}\frac{\partial T}{\partial t} + \frac{\partial \Psi}{\partial T} \frac{\partial T}{\partial t}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+\bigskip
+Simplificando:
+
+%========================================================================================
+% ECUACIÓN A.38
+
+\begin{ceqn} 
+\begin{gather} 
+\label{eq:equA38} 
+\frac{\partial \Psi}{\partial t} = \frac{\partial \Psi}{\partial \overline{p}} \dot{\overline{p}} + \frac{\partial \Psi}{\partial p_i} \dot{p_i} + \frac{\partial \Psi}{\partial S_i}\dot{S_i} 
++ \left[ \frac{\partial \Psi}{\partial C_s} \frac{\partial C_s}{\partial T} + \frac{\partial \Psi}{\partial C_i} \frac{\partial C_i}{\partial T} + \frac{\partial \Psi}{\partial T}  \right] \dot{T}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+\newpage
+Definiendo:
+
+%========================================================================================
+% ECUACIÓN A.39
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equA39} 
+\begin{gather}
+\beta_s = -\frac{1}{C_s} \frac{\partial C_s}{\partial T} 
+\label{eq:equA39a} \\[5pt]
+\beta_i = -\frac{1}{C_i} \frac{\partial C_i}{\partial T} 
+\label{eq:equA39b} \\[5pt]
+\frac{1}{K_s} = \frac{1}{\rho_s} \frac{\partial \rho_s}{\partial \overline{p}} 
+\label{eq:equA39c} \\[5pt]
+\frac{1}{K_i} = \frac{1}{\rho_i} \frac{\partial \rho_i}{\partial p_i} 
+\label{eq:equA39d}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{coeficienteExpansionSolidos}) es el coeficiente de expansión térmica de los solidos, (\gls{coeficienteExpansionFaseI}) es el coeficiente de expansión térmica de la fase $i$, (\gls{coeficienteVolSolidos}) es el coeficiente de expansión volumétrica de los solidos, (\gls{coeficienteVolFaseI}) es el coeficiente de expansión volumétrica de la fase $i$. Calculando las derivadas de la \Glsbf{ecu} \textbf{\ref{eq:equA38}} y substituyendo la \Glsbf{ecu} \textbf{\ref{eq:equA39}}, se obtiene:\bigskip
+
+%========================================================================================
+% ECUACIÓN A.40
+
+\begin{equation} 
+\label{eq:equA40} 
+\begin{split}
+\frac{\partial \Psi}{\partial t} =&\quad (1-\phi)\frac{\rho_s C_s T}{K_s}\dot{\overline{p}} + \phi S_i \frac{\rho_i C_i T}{K_i}\dot{p_i} + \phi \rho_i C_i T \dot{S_w} \\[5pt]
+& + \left[(1-\phi)\rho_s C_s \beta_s T + \phi S_i \rho_i C_i \beta_i T - (1-\phi)\rho_s C_s - \phi S_i\rho_i C_i \right] \dot{T}
+\end{split}
+\end{equation}
+%========================================================================================
+
+\bigskip
+Remplazando la \Glsbf{ecu} \textbf{\ref{eq:equA40}} en la \Glsbf{ecu} \textbf{\ref{eq:equA34}} y despreciando el termino fuente, se obtiene:
+
+
+%----------------------------------------------------------------------------------------
+% ECUACIÓN A.41
+
+\begin{equation} 
+\label{eq:equA41} 
+\begin{split}
+\nabla \cdot (\lambda \nabla T) &= \nabla \cdot(\rho C_i \{v_i\}T) + (1-\phi)\frac{\rho_s C_s T}{K_s}\dot{\overline{p}} + \phi S_i \frac{\rho_i C_i T}{K_i}\dot{p_i} + \phi \rho_i C_i T\dot{S_i} \\[10pt]
+& + \left[(1-\phi)\rho_s C_s \beta_s T + \phi S_i \rho_i C_i \beta_i T - (1-\phi)\rho_s C_s - \phi S_i\rho_i C_i \right] \dot{T}
+\end{split}
+\end{equation}
+%----------------------------------------------------------------------------------------
+
+\bigskip
+Por lo tanto la ecuación de energía para el modelo de transferencia de calor es:
+
+%----------------------------------------------------------------------------------------
+% ECUACIÓN A.42
+
+\begin{equation} 
+\label{eq:equA42} 
+\begin{split}
+\underbrace{\nabla \cdot (\lambda \nabla T )}_\text{Termino Difusivo} &= \underbrace{\nabla \cdot(\rho C_i \{v_i\}T)}_\text{Termino Convectivo} + \underbrace{(1-\phi)\frac{\rho_s c_s T}{K_s}\dot{\overline{p}} + \phi S_i \frac{\rho_i c_i T}{K_i}\dot{p_i} + \phi \rho_i C_i T\dot{S_i}}_\text{Termino de Acoplamiento} \\[10pt]
+&  + \underbrace{\left[(1-\phi)\rho_s C_s (1-\beta_s T) +\phi S_i \rho_i C_i(1-\beta_i T) \right] \dot{T}}_\text{Termino Transitorio}
+\end{split}
+\end{equation}
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------

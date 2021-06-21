@@ -1,0 +1,1256 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%									TESIS DE DOCTORADO
+%							  CHRISTIAN FABIAN GARCIA ROMERO
+%							 UNIVERSIDAD NACIONAL DE COLOMBIA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% TERCER CAPITULO: MODELO MATEMÁTICO
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////-
+%----------------------------------------------------------------------------------------
+% CAPITULO 3
+
+\pagestyle{fancy}
+\chapter{Modelo Matemático Multifísico}~\hypertarget{ch:chapter_03}{}
+\label{ch:chapter_03}
+\thispagestyle{empty}
+
+% \improvement[inline]{Insertar Figura de Impactos! --> Figura 1.1}
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.1
+\section{Características generales}~\hypertarget{sec:sec310}{}
+\label{sec:sec310}
+
+El modelamiento matemático tiene como objetivo describir los diferentes aspectos del mundo real, su interacción y su dinámica a través de ecuaciones matemáticas. En el modelamiento \textit{multifísico} es necesario el planteamiento de modelos matemáticos para cada una de las físicas que se involucran en el análisis. Cada modelo físico esta regido por una ecuación matemática, que generalmente es una ecuación diferencial parcial, que según sea el tipo de problema que se analice puede ser lineal o no-lineal. A partir de estas ecuaciones se pueden generar modelos numéricos a partir de métodos de discretización para resolver este tipo de ecuaciones.\bigskip
+
+En este capitulo se plantea los modelos matemáticos para cada una de las físicas analizadas: (1) Flujo de fluidos en medios porosos; (2) Esfuerzo-Deformación; (3) Transferencia de calor. Todos estos modelos serán expuestos para una condición bifásica. Es decir, el medio poroso esta totalmente saturado por dos fluidos que pueden estar en fase liquida o gaseosa. Después se plantean los modelos \textit{multifísicos} con el acoplamiento de estas físicas. Se obtendrá un modelo Termo-Hidro-Mecánico y un modelo Hidro-Mecánico, los dos en condiciones bifásicas.\bigskip
+
+Como el alcance de este estudio es el flujo bifásico es necesario definir los tipos de fluidos que saturan el medio. En un medio poroso, que experimenta flujo bifásico se define como el \textit{fluido mojado} ($w$)\footnote{Se detona con $w$ por su terminología en ingles "\textit{wetting phase}".} al fluido que moja preferencialmente el medio poroso. El fluido \textit{no-mojado} ($n$)\footnote{Se detona con $n$ por su terminología en ingles "\textit{non-wetting phase}".} es aquel que tiene una menor tendencia de mojar el medio poroso. La mojabilidad de un fluido es la capacidad que tiene de extenderse en un solido. Esta característica se puede medir con el ángulo que el fluido forma con la superficie del solido. A menor ángulo de contacto mayor la mojabilidad del fluido. Por lo tanto el fluido mojado forma un menor ángulo de contacto con el suelo que el fluido no-mojado.\bigskip
+
+Por ejemplo en los suelos el agua tiene la mayor tendencia de mojar el suelo y el aire tiene una menor tendencia. En el caso de las rocas que hacen parte de un reservatorio de hidrocarburos pueden existir tres fluidos: Agua, petroleo y gas. El gas es el de menor mojabilidad, el petroleo tiene la mayor mojabilidad y el agua es un fluido con una mojabilidad intermedia. La mojabilidad tiene una influencia determinante en la capilaridad del medio poroso, que a su vez influye en las características de las presiones de poros y las saturaciones de los fluidos que saturan el medio poroso.\bigskip
+
+La presión capilar ($P_c$) es la diferencia entre la presión de poros del fluido no-mojado ($p_n$) y la presión de poros del fluido mojado ($p_w$) (i.e. $P_c = p_n - p_w$). En suelos esta diferencia se conoce como la succión matricial ($s$). En rocas se trabaja directamente con la presión capilar. Existe una correlación empírica entre la presión capilar y la saturación de los fluidos. Generalmente existe una relación inversamente proporcional entre la saturación del fluido mojado con la presión capilar. Es decir, que si el medio se satura con el fluido mojado la presión capilar disminuye. Si el medio se satura completamente con el fluido mojado la presión capilar es igual a la presión de poros del fluido mojado. Existen pruebas de laboratorio que determinan la variación de la presión capilar respecto a la saturación del fluido mojado. Esta curva es importante en los análisis que se harán en capítulos posteriores porque permiten una formulación explicita de la saturación de los fluidos.\bigskip
+
+En las secciones posteriores las ecuaciones matemáticas se formularan en función de las presiones de poros y de las saturaciones de los fluidos mojado y no mojado, ya que son las principales incógnitas de los modelos de flujo de fluidos expuestos. Las otras dos incógnitas importantes son las deformaciones volumétricas y la temperatura del medio poroso. Al final de este capitulo se expone un resumen de las principales ecuaciones de cada modelo \textit{multifísico} analizado.
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.2
+\section{Modelos físicos generales}~\hypertarget{sec:sec320}{}
+\label{sec:sec320}
+
+En esta sección se establecen los modelos matemáticos generales para los tres modelos físicos analizados. Estos modelos se pueden aplicar a problemas con una fase (i.e. monofásico), dos fases (i.e. bifásico) o mas de dos fases (i.e. multifásico). En esta sección solo se hace referencia a las ecuaciones diferenciales parciales no-lineales que rigen cada fenómeno físico. La determinación completa de cada ecuación se puede consultar en el ~\MYhref[blue]{ch:anexoA}{Anexo A}.\bigskip
+
+% Las incógnitas de los modelos físicos son: (1) Presión de poros de la fase $i$ (\gls{presionPorosFaseI}); (2) Saturación de la fase $i$ (\gls{saturacionFaseI}); (3) Deformación volumétrica del medio poroso (\gls{deformacionVol}); (4) Temperatura del medio poroso (\gls{temperatura}). También aparece el termino de la presión de poros promedio (\gls{presionMedia}), pero este termino es función de las presiones de poros de todos los fluidos que saturan el medio, es decir $\overline{p} = \sum_{i} S_i p_i$. En secciones posteriores se determinarán expresiones para casos particulares (e.g. agua-aire, gas-petroleo). Para cualquiera de estos análisis bifásicos se obtendrá ecuaciones donde el numero de incógnitas es (6): Las presiones de poros y las saturaciones de los fluidos mojado y no-mojado (4), la deformación volumétrica (1) y la temperatura (1) del medio poroso.\bigskip
+
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.2.1
+\subsection{Modelo de flujo de fluidos}~\hypertarget{sec:sec321}{}
+\label{sec:sec321}
+
+El modelo de flujo de fluidos esta regido por la ecuación de la difusividad hidráulica. La obtención de esta ecuación se puede ver en ~\MYhref[blue]{ch:anexo_A10}{Anexo A.1}, y es la siguiente para suelos y rocas no profundas:\bigskip
+
+%========================================================================================
+% ECUACIÓN 3.1
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ31} 
+\underbrace{\nabla\cdot \left[ \frac{[\mathbf{K}] k_{ri}}{\mu_{i}} (\nabla p_i - \rho_{i}\{g\}) \right]}_\text{Termino Difusivo} = \underbrace{S_i\frac{\alpha - \phi}{K_s} \frac{\partial \overline{p}}{\partial t} + \phi\frac{S_i}{K_i}\frac{ \partial p_i}{\partial t} + \phi\frac{\partial S_i}{\partial t}}_\text{Termino Transitorio} +\underbrace{\alpha S_i \frac{\partial \epsilon_v}{\partial t} - \beta S_i \frac{\partial T}{\partial t}}_\text{Termino de Acoplamiento}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+\bigskip
+donde (\gls{tensorK}) es el tensor de permeabilidad intrínseca, (\gls{permRelativaFaseI}) es la permeabilidad relativa de la fase $i$, (\gls{viscosidadFaseI}) es la viscosidad dinámica de la fase $i$, (\gls{presionPorosFaseI}) es la presión de poros de la fase $i$,(\gls{gravedad}) es el vector de aceleración de la gravedad, (\gls{densidadFaseI}) es la densidad de la fase $i$, (\gls{saturacionFaseI}) es el grado de saturación de la fase $i$, (\gls{coeficienteBiot}) es el coeficiente de Biot, (\gls{porosidad}) es la porosidad del medio, (\gls{coeficienteVolSolidos}) es el coeficiente de deformación volumétrica de los sólidos del medio, (\gls{presionMedia}) es la presión de poros promedio, (\gls{coeficienteVolFaseI}) es el coeficiente de deformación volumétrica de la fase $i$, (\gls{presionPorosFaseI}) es la presión de poros de la fase $i$, (\gls{deformacionVol}) deformación volumétrica, (\gls{coeficienteExpansion}) es el coeficiente de expansión térmica del medio poroso, (\gls{temperatura}) es en la temperatura, (\gls{tiempo}) es el tiempo, (\gls{gradiente}) es el operador diferencial gradiente, (\gls{divergente}) es el operador diferencial divergente.
+
+\bigskip
+Para rocas que están en formaciones profundas la ecuación es:
+
+%========================================================================================
+% ECUACIÓN 3.2
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ32} 
+\underbrace{\nabla\cdot \{T_{ij}\}}_\text{Termino Difusivo} = \underbrace{\lambda_{ij} \frac{(\alpha - \phi)}{K_s}\frac{\partial \overline{p}}{\partial t} + \phi \frac{\partial \lambda_{ij}}{\partial t}}_\text{Termino Transitorio} +\underbrace{\alpha \lambda_{ij} \frac{\partial \epsilon_{v}}{\partial t} - \lambda_f(\alpha - \phi)\frac{\beta_s}{3}\frac{\partial T}{\partial t}}_\text{Termino de Acoplamiento}
+\end{gather} 
+\end{ceqn}
+%=======================================================================================
+
+donde: 
+
+%========================================================================================
+% ECUACIÓN 3.3
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equ33} 
+\begin{gather}
+\{T_{ij}\} = [\mathbf{K}]\frac{k_{ri}}{\mu_{i} B_{i}} (\nabla p_i - \rho_{i}\{\boldsymbol g\}) + R_{s-ij} [\mathbf{K}] \frac{k_{rj}}{\mu_{j} B_{j}} (\nabla p_j - \rho_{j}\{\boldsymbol g\})   
+\label{eq:equ33a} \\[10pt]
+\lambda_{ij} = \frac{S_i}{B_i} + R_{s-ij}\frac{S_j}{B_j}
+\label{eq:equ33b}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+donde (\Gls{fvf}) es el factor volumen formación de las fases $i$ y $j$, (\gls{solubilidadFaseI}) es la razón de solubilidad de la fase $i$ en la fase $j$, ($\phi_{i,stc}$) es la densidad de la fase $i$ en condiciones estándar \footnote{Según el "\textit{American Petroleum Institute - (API)}", las condiciones estándar de temperatura y presión son el conjunto de condiciones en que los fluidos de un reservorio se encuentran en la superficie. La temperatura estándar es $60^\circ F$ ($15.56^\circ C$) y la presión estándar es $1\ atm$ ($101.35\ kPa$)}.\bigskip
+
+En las \Glsplbf{ecu} \textbf{\ref{eq:equ31}} y \textbf{\ref{eq:equ32}} existen cuatro incógnitas: La presión de poros de las fases $i$ (\gls{presionPorosFaseI}), la saturación de las fases $i$ (\gls{saturacionFaseI}), la deformación volumétrica del medio poroso (\gls{deformacionVol}) y la temperatura del medio poroso(\gls{temperatura}). Según sea la formulación que se adopte se puede tomar la saturación de las fases de manera explicita o de manera implícita. Esto se abordara en secciones posteriores.
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.2.2
+\subsection{Modelo de esfuerzo-deformación}~\hypertarget{sec:sec322}{}
+\label{sec:sec322}
+
+El comportamiento mecánico de un medio poroso está determinado por la ecuación de  esfuerzo-deformación o también llamada ecuación geomecánico. Este modelo permite determinar: (1) Deformaciones; (2) Esfuerzos; (3) Desplazamientos. La obtención de la ecuación que rige este modelo se puede ver en el~\MYhref[blue]{ch:anexo_A20}{Anexo A.2}, y es la siguiente para suelos y rocas:\bigskip
+
+%========================================================================================
+% ECUACIÓN 3.4
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ34} 
+\underbrace{\mathbf{L}^T [\boldsymbol D] \mathbf{L} \{\boldsymbol u\}}_\text{Termino Fuerzas Internas} \quad - \quad  \underbrace{\alpha\nabla\overline{p} -  \frac{\beta_s}{3}\mathbf{L}^T[\boldsymbol D]\{\mathbf{I}\}T}_\text{Termino de Acoplamiento} \quad = \underbrace{\{\boldsymbol b\}}_\text{Termino Fuerzas de Cuerpo}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+donde:
+
+
+%========================================================================================
+% ECUACIÓN 3.5
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equ35} 
+\begin{gather}
+\mathbf{L}^T = 
+      \begin{bmatrix}
+      \frac{\partial}{\partial x} & 0 & 0 & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} & 0 \\[0.3em]
+      0 & \frac{\partial}{\partial y} & 0 & \frac{\partial}{\partial x} & 0 & \frac{\partial}{\partial z} \\[0.3em]
+      0 & 0 & \frac{\partial}{\partial z} & 0 & \frac{\partial}{\partial x} & \frac{\partial}{\partial y}
+      \end{bmatrix}
+      \label{eq:equ35a} \\[5pt]
+\{\mathbf{I}\}^T = 
+      \begin{Bmatrix}
+      1 & 1 & 1 & 0 & 0 & 0
+      \end{Bmatrix}
+      \label{eq:equ35b} \\[5pt]
+\nabla = \mathbf{L}^T \{\boldsymbol I\}
+      \label{eq:equ35c} \\[5pt]
+\nabla^T = 
+      \begin{Bmatrix} 
+      \partial / \partial x
+      &\partial / \partial y
+      &\partial / \partial z
+      \end{Bmatrix} 
+      \label{eq:equ35d}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%=======================================================================================
+
+donde (\gls{operadorL}) es el operador diferencial de deformaciones, (\gls{gradiente}) es el operador diferencial gradiente, (\gls{matrizRigidez}) es la matriz de rigidez del modelo constitutivo, (\gls{vectorDesplazamiento}) es el vector de desplazamientos, (\gls{coeficienteBiot}) es el coeficiente de Biot, (\gls{presionMedia}) es la presión de poros promedio, (\gls{coeficienteExpansionSolidos}) es el coeficiente de expansión térmica de los solidos, (\gls{vectorIdentidad}) es el vector identidad, (\gls{temperatura}) es la temperatura, (\gls{vectorFuerzasCuerpo}) es el vector de fuerzas de cuerpo.\bigskip
+
+La matriz de rigidez del modelo constitutivo (\gls{matrizRigidez}), depende del comportamiento mecánico del medio poroso. Por ejemplo, si el medio poroso es elástico e isotópico la matriz de rigidez se transforma en la matriz elástica (\gls{matrizElastica}) que se puede ver en la siguiente ecuación:
+
+
+%========================================================================================
+% ECUACIÓN 3.6
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ36} 
+\mathbf{[D_e]} = \frac{E}{(1+\nu)(1-2\nu)}
+      \begin{bmatrix}
+      1-\nu & \nu & \nu & 0 & 0 & 0 \\[0.3em]
+      \nu & 1-\nu & \nu & 0 & 0 & 0 \\[0.3em]
+      \nu & \nu & 1-\nu & 0 & 0 & 0 \\[0.3em]
+      0 & 0 & 0 & \frac{1-2\nu}{2} & 0 & 0 \\[0.3em]
+      0 & 0 & 0 & 0 & \frac{1-2\nu}{2} & 0 \\[0.3em]
+      0 & 0 & 0 & 0 & 0 & \frac{1-2\nu}{2}
+      \end{bmatrix}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{moduloElasticidad}) es el modulo de elasticidad del medio, (\gls{poisson}) es el coeficiente de Poisson del medio. Cuando el medio tiene un comportamiento elasto-plástico, la matriz elástica no es valida. en secciones posteriores se expone este caso.
+
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.2.3
+\subsection{Modelo de transferencia de calor}~\hypertarget{sec:sec323}{}
+\label{sec:sec323}
+
+El modelo de transferencia de calor esta regido por la ecuación de energía. La obtención de esta ecuación se puede ver en ~\MYhref[blue]{ch:anexo_A30}{Anexo A.3}, y es la siguiente para suelos y rocas:\bigskip
+
+%----------------------------------------------------------------------------------------
+% ECUACIÓN 3.7
+
+\begin{equation} 
+\label{eq:equ37} 
+\begin{split}
+\underbrace{\nabla \cdot (\lambda \nabla T )}_\text{Termino Difusivo} &= \underbrace{\nabla \cdot(\rho C_i \{v_i\}T)}_\text{Termino Convectivo} + \underbrace{(1-\phi)\frac{\rho_s c_s T}{K_s}\dot{\overline{p}} + \phi S_i \frac{\rho_i c_i T}{K_i}\dot{p_i} + \phi \rho_i C_i T\dot{S_i}}_\text{Termino de Acoplamiento} \\[10pt]
+&  + \underbrace{\left[(1-\phi)\rho_s C_s (1-\beta_s T) +\phi S_i \rho_i C_i(1-\beta_i T) \right] \dot{T}}_\text{Termino Transitorio}
+\end{split}
+\end{equation}
+%---------------------------------------------------------------------------------------
+
+donde:
+
+%========================================================================================--
+% ECUACIÓN 3.8
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ38} 
+\{\boldsymbol v_i\} = -\frac{\mathbf{[K]}] k_{ri}}{\mu_{i}B_{i}} (\nabla p_i - \rho_{i}\{ \boldsymbol g\})
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+donde (\gls{conductividadTemp}) es el coeficiente de conductividad térmica del medio, (\gls{densidad}) es la densidad del medio, (\gls{capacidadFaseI}) capacidad calórica especifica de la fase $i$, (\gls{velInfiltracionFaseI}) es la velocidad de infiltración de la fase $i$, (\gls{porosidad}) es la porosidad del medio, (\gls{densidadSolidos}) es la densidad de las partículas solidas, (\gls{capacidadSolidos}) es la capacidad calórica especifica de las partículas solidas, (\gls{coeficienteVolSolidos}) coeficiente de expansión volumétrica de los solidos, (\gls{presionMedia}) es la presión de poros promedio, (\gls{saturacionFaseI}) es la saturación de la fase $i$, (\gls{densidadFaseI}) es la densidad de la fase $i$, (\gls{coeficienteVolFaseI}) es el coeficiente de expansión volumétrica de la fase $i$, (\gls{presionPorosFaseI}) es la presión de poros de la fase $i$, (\gls{coeficienteExpansionSolidos}) es el coeficiente de expansión térmica de los solidos, (\gls{coeficienteExpansionFaseI}) es el coeficiente de expansión térmica de la fase $i$, (\gls{temperatura}) es la temperatura del medio, (\gls{gradiente}) es el operador diferencial gradiente , (\gls{divergente}) es el operador diferencial divergente, (\gls{tensorK}) es el tensor de permeabilidad intrínseca, (\gls{permRelativaFaseI}) es la permeabilidad relativa de la fase $i$, (\gls{viscosidadFaseI}) es la viscosidad dinámica de la fase $i$, (\gls{presionPorosFaseI}) es la presión de poros de la fase $i$,(\gls{gravedad}) es el vector de aceleración de la gravedad.\bigskip
+
+En la ecuacion de energia existen tres incógnitas: La presión de poros de las fases $i$ (\gls{presionPorosFaseI}), la saturación de las fases $i$ (\gls{saturacionFaseI}) y la temperatura del medio poroso(\gls{temperatura}). Según sea la formulación que se adopte se puede tomar la saturación de las fases de manera explicita o de manera implícita. Esto se abordara en secciones posteriores.\bigskip
+
+La \Glsbf{ecu} \textbf{\ref{eq:equ37}} es una ecuación diferencial parcial difusivo-convectiva. Este tipo de ecuación es diferente a la ecuación del modelo de flujo de fluidos ya que la ecuación de difusividad hidráulica no posee el termino convectivo. Por lo tanto, se requiere estrategias diferentes para la solución de cada una de estas ecuaciones. Esto se aborda en capítulos posteriores.\bigskip
+
+El termino de acoplamiento de la ecuación de emergía no posee un termino referente a la deformación volumétrica. El termino de acoplamiento solo es función de la presión de poros y de la saturación de las fases $i$. Por tal motivo se pueden acoplar los modelos de flujo de fluidos y de transferencia de calor en un solo sistema de ecuaciones diferenciales parciales no-lineales. Esto se abordara en capítulos posteriores.
+
+
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.3
+\section{Modelos multifísicos bifásicos}~\hypertarget{sec:sec330}{}
+\label{sec:sec330}
+
+Después de establecer las ecuaciones generales de cada modelo físico se debe determinar un modelo \textit{multifísico} general en condiciones bifásicas. Para tal fin es necesario la definición de las siguientes ecuaciones, en función de los fluidos mojado ($w$) y no-mojado ($n$).\bigskip
+
+\bigskip
+\textbf{A. Saturación del medio poroso}\bigskip
+
+La relación de las saturaciones de los fluidos mojado y no mojado es:
+
+%========================================================================================
+% ECUACIÓN 3.9
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ39} 
+S_n = 1 - S_w
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+donde ($S_w$) es la saturación del fluido mojado, ($S_n$) es la saturación del fluido no-mojado.\bigskip
+
+\bigskip
+\textbf{B. Derivadas respecto al tiempo de las saturaciones}\bigskip
+
+La saturación de los fluidos en un medio parcialmente saturado es función de la presión capilar ($P_c$) y de la temperatura ($T$). Por lo tanto, la derivada de la saturación del fluido mojado respecto al tiempo con ayudad de la regla de la cadena es:
+
+%========================================================================================
+% ECUACIÓN 3.10
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ310} 
+\frac{\partial S_w}{\partial t} = \frac{\partial S_w}{\partial P_c}\left[ \frac{\partial p_n}{\partial t} - \frac{\partial p_w}{\partial t}  \right] + \frac{\partial S_w}{\partial T}\frac{\partial T}{\partial t}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+Adoptando la nomenclatura $\partial x / \partial t = \dot{x}$, para la derivada parcial respecto al tiempo, $S'_w = \partial S_w / \partial P_c$, para la derivada de la saturación del fluido mojado con respecto a la presión capilar, $S'_{wT} = \partial S_w / \partial T$, para la derivada de la saturación del fluido mojado con respecto a la temperatura, la \Glsbf{ecu} \textbf{\ref{eq:equ310}} se puede escribir como:
+
+%========================================================================================
+% ECUACIÓN 3.11
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ311} 
+\dot{S_w} = S'_w [\dot{p_n} - \dot{p_w}] + S'_{wT} \dot{T}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+Derivando la  \Glsbf{ecu} \textbf{\ref{eq:equ39}} con respecto al tiempo se obtiene la derivada de la saturación del fluido no-mojado respecto al tiempo:
+
+%========================================================================================
+% ECUACIÓN 3.12
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ312} 
+\dot{S_n} = -\dot{S_w} 
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+%\bigskip
+\textbf{C. Presión de poros promedio}\bigskip
+
+La presión de poros promedio se define como \citep{pao_fully_2001}:
+
+%========================================================================================
+% ECUACIÓN 3.13
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ313} 
+\overline{p} = S_w p_w + S_n p_n 
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+La derivada total de la presión de poros promedio, con ayuda de la regla de la cadena es: 
+
+%========================================================================================
+% ECUACIÓN 3.14
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ314} 
+d\overline{p} = S_w dp_w + p_w dS_w + S_n dp_n + p_n dS_n
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+Aplicando la derivada del tiempo en la \Glsbf{ecu} \textbf{\ref{eq:equ314}} y reemplazando las \Glsplbf{ecu} \textbf{\ref{eq:equ311}} y \textbf{\ref{eq:equ312}} se obtiene la razon de cambio de la presion promedio:
+
+%========================================================================================
+% ECUACIÓN 3.15
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ315} 
+\dot{\overline{p}} = S''_w \dot{p_w} + S''_n \dot{p_n} + S''_{T} \dot{T}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+donde: 
+
+%========================================================================================
+% ECUACIÓN 3.16
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equ316} 
+\begin{gather}
+S''_w = S_w + P_c S'_w 
+\label{eq:equ316a} \\[5pt]
+S''_n = (1-S_w) - P_c S'_w
+\label{eq:equ316b} \\[5pt]
+S''_{T} = - P_c S'_{wT}
+\label{eq:equ316c} \\[5pt]
+P_c = p_n - p_w
+\label{eq:equ316d}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%=======================================================================================
+
+Para la derivada en el espacio se obtiene una expresión similar:
+
+%========================================================================================
+% ECUACIÓN 3.17
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ317} 
+\nabla \overline{p} = S''_w \nabla p_w + S''_n \nabla p_n + S''_{T} \nabla T
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.3.1
+\subsection{Modelo Termo-Hidro-Mecánico}~\hypertarget{sec:sec331}{}
+\label{sec:sec331}
+
+El modelo Termo-Hidro-Mecánico se caracteriza por acoplar las ecuaciones diferenciales parciales que rigen cada modelo en un solo sistema de ecuaciones. Este sistema es de cuatro incógnitas con cuatro ecuaciones: (1) Ecuación de flujo del fluido mojado; (2) Ecuación de flujo del fluido no-mojado; (2) Ecuación de esfuerzo-deformación; (4) Ecuación de energía.\bigskip
+
+
+\bigskip
+\textbf{A. Ecuación de flujo del fluido mojado ($w$)}\bigskip
+
+Aplicando la \Glsbf{ecu} \textbf{\ref{eq:equ32}} al fluido mojado ($w$), teniendo en cuenta que $R_{s-ij} = 0$ se obtiene: 
+
+
+%========================================================================================
+% ECUACIÓN 3.18
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ318} 
+\nabla\cdot \left[ \frac{[\mathbf{K}] k_{rw}}{\mu_{w} B_w} (\nabla p_w - \rho_{w}\{g\}) \right] = \frac{S_w}{B_w} \frac{\alpha - \phi}{K_s} \dot{\overline{p}} + \phi \frac{\partial}{\partial t} \left( \frac{S_w}{B_w} \right) + \alpha \frac{S_w}{B_w}\dot{\epsilon_v} - (\alpha - \phi)\frac{\beta_s}{3} \frac{S_w}{B_w} \dot{T}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+
+donde:
+%----------------------------------------------------------------------------------------
+% ECUACIÓN 3.19
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ319}
+\phi \frac{\partial}{\partial t} \left(\frac{S_w}{B_w}\right) = \phi S_w  \frac{\partial }{\partial t} \left( \frac{1}{B_w} \right) + \frac{\phi}{B_w} \dot{S_w} 
+\end{gather} 
+\end{ceqn}
+%----------------------------------------------------------------------------------------
+
+\bigskip
+Reemplazando la \Glsbf{ecu} \textbf{\ref{eq:equ319}} en la\Glsbf{ecu} \textbf{\ref{eq:equ318}} se obtiene:
+
+%----------------------------------------------------------------------------------------
+% ECUACIÓN 3.20
+
+\begin{equation} 
+\label{eq:equ320} 
+\begin{split}
+\nabla\cdot \left[ \frac{[\mathbf{K}] k_{rw}}{\mu_{w} B_w} (\nabla p_w - \rho_{w}\{g\}) \right] =& \frac{S_w}{B_w} \frac{\alpha - \phi}{K_s} \dot{\overline{p}} + \phi S_w  \frac{\partial }{\partial t} \left(\frac{1}{B_w}\right)  \\[10pt]
+&+ \frac{\phi}{B_w} \dot{S_w} + \alpha \frac{S_w}{B_w}\dot{\epsilon_v} - (\alpha - \phi)\frac{\beta_s}{3} \frac{S_w}{B_w} \dot{T}
+\end{split} 
+\end{equation}
+
+%----------------------------------------------------------------------------------------
+
+definiendo:
+
+%----------------------------------------------------------------------------------------
+% ECUACIÓN 3.21
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ321} 
+\frac{\partial}{\partial t} \left( \frac{1}{B_w} \right) = \frac{\partial (1/B_w)}{\partial p_w} \frac{\partial p_w}{\partial t} + \frac{\partial (1/B_w)}{\partial T} \frac{\partial T}{\partial t} 
+= B'_{wp}\dot{p_w} + B'_{wT}\dot{T} 
+\end{gather} 
+\end{ceqn}
+%----------------------------------------------------------------------------------------
+
+Reemplazando la \Glsbf{ecu} \textbf{\ref{eq:equ321}} en la \Glsbf{ecu} \textbf{\ref{eq:equ320}} se obtiene:
+
+%----------------------------------------------------------------------------------------
+% ECUACIÓN 3.22
+
+\begin{equation} 
+\label{eq:equ322} 
+\begin{split}
+\nabla\cdot \left[ \frac{[\mathbf{K}] k_{rw}}{\mu_{w} B_w} (\nabla p_w - \rho_{w}\{g\}) \right] =& \frac{S_w}{B_w} \frac{\alpha - \phi}{K_s} \dot{\overline{p}} + \phi S_w  B'_{wp}\dot{p_w} + \frac{\phi}{B_w} \dot{S_w} \\[10pt]
+& + \alpha \frac{S_w}{B_w}\dot{\epsilon_v} + \left[ \phi S_w B'_{wT} - (\alpha - \phi)\frac{\beta_s}{3} \frac{S_w}{B_w} \right] \dot{T}
+\end{split} 
+\end{equation}
+
+%----------------------------------------------------------------------------------------
+
+Reemplazando las \Glsplbf{ecu} \textbf{\ref{eq:equ311}} y \textbf{\ref{eq:equ315}} en la \Glsbf{ecu} \textbf{\ref{eq:equ322}} se obtiene:
+
+%========================================================================================
+% ECUACIÓN 3.23
+
+\begin{equation} 
+\label{eq:equ323} 
+\begin{split}
+\nabla\cdot & \left[ \frac{[\mathbf{K}] k_{rw}}{\mu_{w}} (\nabla p_w - \rho_{w}\{\boldsymbol g\}) \right] = \left[ \frac{S_w}{B_w} \frac{\alpha - \phi}{K_s}  S''_{w} + \phi S_w  B'_{wp} - \frac{\phi }{B_w}S'_w \right] \dot{p_w} \\[10pt]
+&+ \left[ \frac{S_w}{B_w}\frac{\alpha - \phi}{K_s}  S''_{n} + \frac{\phi}{B_w}S'_w \right] \dot{p_n} + \alpha \frac{S_w}{B_w} \dot{\epsilon_{v}}\\[10pt] 
+&+ \left[\frac{S_w}{B_w} \frac{\alpha - \phi}{K_s} S''_T + \phi S_w B'_{wT} + \frac{\phi}{B_w}S'_{wT} - (\alpha - \phi)\frac{\beta_s}{3} \frac{S_w}{B_w} \right]\dot{T}
+\end{split} 
+\end{equation}
+%========================================================================================
+
+
+\bigskip
+\textbf{B. Ecuación de flujo del fluido no-mojado ($n$)}\bigskip
+
+Aplicando la \Glsbf{ecu} \textbf{\ref{eq:equ32}} al fluido no-mojado ($n$), teniendo en cuenta que $R_{s-ij} \neq 0$ se obtiene:
+
+
+%========================================================================================
+% ECUACIÓN 3.24
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ324} 
+\nabla\cdot \{T_{nw}\}  = \lambda_{nw} \frac{(\alpha - \phi)}{K_s} \dot{\overline{p}} + \phi \frac{\partial \lambda_{nw}}{\partial t} + \alpha \lambda_{nw} \dot{\epsilon_{v}} - \lambda_{wn}(\alpha - \phi)\frac{\beta_s}{3}\dot{T}
+\end{gather} 
+\end{ceqn}
+%=======================================================================================
+
+donde: 
+
+%========================================================================================
+% ECUACIÓN 3.25
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equ325} 
+\begin{gather}
+\{T_{nw}\} = [\mathbf{K}] \frac{k_{rn}}{\mu_{n} B_{n}}(\nabla p_n - \rho_{n,stc}\{g\}) + R_{s-nw} [\mathbf{K}] \frac{k_{rw}}{\mu_{w} B_{w}}(\nabla p_w - \rho_{w,stc}\{g\})    
+\label{eq:equ325a} \\[10pt]
+\lambda_{nw} = \frac{S_n}{B_n} + R_{s-nw}\frac{S_w}{B_w}
+\label{eq:equ325b}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+Derivando el segundo termino del lado derecho de la \Glsbf{ecu} \textbf{\ref{eq:equ324}} se obtiene:
+
+%========================================================================================
+% ECUACIÓN 3.26
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ326} 
+\frac{\partial \lambda_{nw}}{\partial t} = S_n \frac{\partial }{\partial t}\left(\frac{1}{B_n}\right) + \frac{\dot{S_n}}{B_n} + \frac{S_w}{B_w}\dot{R}_{s-nw} + \frac{R_{s-nw}}{B_w}\dot{S_w} + S_w R_{s-nw} \frac{\partial }{\partial t}\left(\frac{1}{B_w}\right)
+\end{gather} 
+\end{ceqn}
+%=======================================================================================
+
+definiendo
+
+%----------------------------------------------------------------------------------------
+% ECUACIÓN 3.27
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equ327} 
+\begin{gather}
+\frac{\partial}{\partial t} \left( \frac{1}{B_n} \right) = \frac{\partial (1/B_n)}{\partial p_n} \frac{\partial p_n}{\partial t} + \frac{\partial (1/B_n)}{\partial T} \frac{\partial T}{\partial t} 
+= B'_{np}\dot{p_n} + B'_{nT}\dot{T}      
+\label{eq:equ327a} \\[10pt]
+\dot{R}_{s-nw} = \frac{\partial R_{s-nw}}{\partial p_w} \frac{\partial p_w}{\partial t} + \frac{\partial R_{s-nw}}{\partial T} \frac{\partial T}{\partial t}
+= R'_{wp}\dot{p_w} + R'_{wT}\dot{T}     
+\label{eq:equ327b}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%----------------------------------------------------------------------------------------
+
+Reemplazando las \Glsplbf{ecu} \textbf{\ref{eq:equ39}}, \textbf{\ref{eq:equ312}}, \textbf{\ref{eq:equ321}}, \textbf{\ref{eq:equ327}} en la \Glsbf{ecu} \textbf{\ref{eq:equ326}} se obtiene:
+
+%========================================================================================
+% ECUACIÓN 3.28
+
+\begin{equation} 
+\label{eq:equ328} 
+\begin{split}
+\frac{\partial \lambda_{nw}}{\partial t} =& \left[(1-S_w) B'_{np}\right]\dot{p_n} + \left[ \frac{S_w}{B_w}R'_{wp} + S_w R_{s-nw} B'_{wp} \right]\dot{p_w} + \left[\frac{R_{s-nw}}{B_w} - \frac{1}{B_n} \right]\dot{S_w} \\[10pt]
+&+ \left[(1-S_w)B'_{nT} +  \frac{S_w}{B_w}R'_{wT} +  S_w R_{s-nw}B'_{wT} \right]\dot{T}
+\end{split} 
+\end{equation}
+%========================================================================================
+
+Reemplazando las \Glsplbf{ecu} \textbf{\ref{eq:equ311}}, \textbf{\ref{eq:equ315}}, \textbf{\ref{eq:equ328}}, en la \Glsbf{ecu} \textbf{\ref{eq:equ324}} se obtiene la ecuación general de flujo del fluido no-mojado:
+
+%========================================================================================
+% ECUACIÓN 3.29
+
+\begin{equation} 
+\label{eq:equ329} 
+\begin{split}
+\nabla\cdot& \left[ [\mathbf{K}] \frac{k_{rn}}{\mu_{n} B_{n}}(\nabla p_n - \rho_{n,stc}\{g\})\right] + \nabla\cdot \left[ R_{s-nw}[\mathbf{K}]\frac{k_{rw}}{\mu_{w} B_{w}}(\nabla p_w - \rho_{w,stc}\{g\}) \right] \\[10pt]
+&= \left[\lambda_{nw} \frac{(\alpha - \phi)}{K_s} S''_n + \phi(1-S_w) B'_{np} + R_{s-nw}\frac{\phi}{B_w} S'_w - \frac{\phi}{B_n}S'_w \right]\dot{p_n} + \alpha \lambda_{nw} \dot{\epsilon_{v}} \\[10pt]
+&+ \left[\lambda_{nw} \frac{(\alpha - \phi)}{K_s} S''_w + \phi\frac{S_w}{B_w}R'_{wp} + \phi S_w R_{s-nw} B'_{wp} - R_{s-nw}\frac{\phi}{B_w} S'_w + \frac{\phi}{B_n}S'_w \right]\dot{p_w} \\[10pt]
+&+ \left[\lambda_{nw} \frac{(\alpha - \phi)}{K_s} S''_T + \phi(1-S_w)B'_{nT} + \phi\frac{S_w}{B_w}R'_{wT} + \phi S_w R_{s-nw}B'_{wT} \right]\dot{T}\\[10pt]
+&+ \left[ R_{s-nw}\frac{\phi}{B_w} S'_{wT} - \frac{\phi}{B_n}S'_{wT} - \lambda_{wn}(\alpha - \phi)\frac{\beta_s}{3} \right]\dot{T}
+\end{split} 
+\end{equation}
+%========================================================================================
+
+\bigskip
+\textbf{C. Ecuación de esfuerzo-deformación}\bigskip
+
+Para obtener la ecuación de esfuerzo-deformación se debe reemplazar la \Glsbf{ecu} \textbf{\ref{eq:equ317}} en la \Glsbf{ecu} \textbf{\ref{eq:equ34}}:
+
+%========================================================================================
+% ECUACIÓN 3.30
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ330} 
+\mathbf{L}^T [\boldsymbol D] \mathbf{L} \{\boldsymbol u\} - \alpha [S''_w \nabla p_w + S''_n \nabla p_n + S''_{T} \nabla T] -  \frac{\beta_s}{3}\mathbf{L}^T[\boldsymbol D]\{\mathbf{I}\}T = \{\boldsymbol b\}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+definiendo:
+
+%========================================================================================
+% ECUACIÓN 3.31
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ331} 
+\alpha \{\mathbf{I}\} = \{\mathbf{I}\} - \frac{[\boldsymbol D]\{\mathbf{I}\}}{3K_m} \to [\boldsymbol D]\{\mathbf{I}\} = 3K_m(1-\alpha)\beta_s\{\mathbf{I}\} 
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+\bigskip
+Reemplazando la \Glsbf{ecu} \textbf{\ref{eq:equ331}} en la \Glsbf{ecu} \textbf{\ref{eq:equ330}} y simplificando de obtiene  la ecuación de esfuerzo-deformación general:
+
+
+%========================================================================================
+% ECUACIÓN 3.32
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ332} 
+\mathbf{L}^T [\boldsymbol D] \mathbf{L} \{\boldsymbol u\} - \alpha S''_w \nabla p_w - \alpha  S''_n \nabla p_n - [3K_m(1-\alpha)\beta_s - \alpha S''_{T} ] \nabla T = \{\boldsymbol b\}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+A diferencia de las ecuaciones de flujo donde una de las incógnitas es la deformación volumétrica, en la ecuación mecánica la incógnita principal son los desplazamientos. Esto se debe a la técnica de solución adoptada que se expone en capítulos posteriores.
+\newpage
+
+\bigskip
+\textbf{D. Ecuación de energía}\bigskip
+
+Para obtener la ecuación de energía se debe aplicar a los fluidos mojado y no mojado, obteniendo:
+
+%----------------------------------------------------------------------------------------
+% ECUACIÓN 3.33
+
+\begin{equation} 
+\label{eq:equ333} 
+\begin{split}
+\nabla\cdot (\lambda \nabla T ) &= \nabla\cdot (\rho_w C_w\{v_w\}T + \rho_n C_n\{v_n\}T) + (1-\phi)\frac{\rho_s C_s T}{K_s}\dot{\overline{p}} \\[10pt]
+& + \phi S_w \frac{\rho_w C_w T}{K_w}\dot{p_w} + \phi S_n \frac{\rho_n C_n T}{K_n}\dot{p_n} + [\phi \rho_w C_w T - \phi \rho_n C_n T] \dot{S_w} \\[10pt]
+& + \left[(1-\phi)\rho_s C_s (1-\beta_s T) +\phi S_w \rho_w C_w(1-\beta_w T) +\phi S_n \rho_n C_n(1-\beta_n T) \right] \dot{T}
+\end{split}
+\end{equation}
+%---------------------------------------------------------------------------------------
+
+
+\bigskip
+Reemplazando las \Glsplbf{ecu} \textbf{\ref{eq:equ311}} y \textbf{\ref{eq:equ315}} en la \Glsbf{ecu} \textbf{\ref{eq:equ333}} y simplificando de obtiene  la ecuación de energía general:
+
+%----------------------------------------------------------------------------------------
+% ECUACIÓN 3.34
+
+\begin{equation} 
+\label{eq:equ334} 
+\begin{split}
+\nabla\cdot (\lambda \nabla T ) &= \nabla\cdot (\rho_w C_w\{v_w\}T + \rho_n C_n\{v_n\}T)\\[10pt]
+& + T\left[(1-\phi)\frac{\rho_s C_s}{K_s} S''_w + \phi\rho_w C_w \left[\frac{S_w}{K_w} - S'_w \right] + \phi\rho_n C_n S'_w \right]\dot{p_w} \\[10pt]
+& + T\left[(1-\phi)\frac{\rho_s C_s}{K_s} S''_n + \phi\rho_n C_n \left[\frac{(1-S_w)}{K_n} + S'_w \right] - \phi\rho_w C_w S'_w \right]\dot{p_n} \\[10pt]
+&+ \left[(1-\phi)\rho_s C_s \left(1-\beta_s T + \frac{T}{K_s}S''_T\right) \right] \dot{T}\\[10pt] 
+&+ \left[\phi\rho_w C_w [S_w(1-\beta_w T) + S'_{wT}] + \phi\rho_n C_n [(1-S_w)(1-\beta_n T) - S'_{wT}] \right] \dot{T}
+\end{split}
+\end{equation}
+%---------------------------------------------------------------------------------------
+
+donde
+
+%========================================================================================-
+% ECUACIÓN 3.35
+
+\begin{ceqn} 
+\begin{subequations}
+\label{eq:equ335} 
+\begin{gather}
+\{\boldsymbol v_w\} = -\frac{\mathbf{[K]} k_{rw}}{\mu_{w}B_{w}} (\nabla p_w - \rho_{w}\{ \boldsymbol g\})    
+\label{eq:equ335a} \\[10pt]
+\{\boldsymbol v_n\} = -\frac{\mathbf{[K]} k_{rn}}{\mu_{n}B_{n}} (\nabla p_n - \rho_{n}\{ \boldsymbol g\})
+\label{eq:equ335b}
+\end{gather}  
+\end{subequations} 
+\end{ceqn}
+%========================================================================================
+
+%----------------------------------------------------------------------------------------
+
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.3.2
+\subsection{Modelo Hidro-Mecánico}~\hypertarget{sec:sec332}{}
+\label{sec:sec332}
+
+El modelo Hidro-Mecánico se obtiene al asumir condiciones isotérmicas. Por lo tanto, en las \Glsplbf{ecu} \textbf{\ref{eq:equ323}}, \textbf{\ref{eq:equ329}} y \textbf{\ref{eq:equ332}} el termino del cambio de la temperatura ($\dot{T}$) es igual a cero. Como la temperatura ya no es una incógnita, en este modelo \textit{multifísico} no es necesario el uso de la ecuación de energía. Por lo tanto las ecuaciones que definen este modelo son: (1) Ecuación de flujo del fluido mojado; (2) Ecuación de flujo del fluido no-mojado; (2) Ecuación de esfuerzo-deformación.
+
+\newpage
+
+\textbf{A. Ecuación de flujo del fluido mojado ($w$)}\bigskip
+
+%========================================================================================
+% ECUACIÓN 3.36
+
+\begin{equation} 
+\label{eq:equ336} 
+\begin{split}
+\nabla\cdot & \left[ \frac{[\mathbf{K}] k_{rw}}{\mu_{w}} (\nabla p_w - \rho_{w}\{\boldsymbol g\}) \right] = \left[ \frac{S_w}{B_w} \frac{\alpha - \phi}{K_s}  S''_{w} + \phi S_w  B'_{wp} - \frac{\phi }{B_w}S'_w \right] \dot{p_w} \\[10pt]
+&+ \left[ \frac{S_w}{B_w}\frac{\alpha - \phi}{K_s}  S''_{n} + \frac{\phi}{B_w}S'_w \right] \dot{p_n} + \alpha \frac{S_w}{B_w} \dot{\epsilon_{v}}
+\end{split} 
+\end{equation}
+%========================================================================================
+
+
+\bigskip
+\textbf{B. Ecuación de flujo del fluido no-mojado ($n$)}\bigskip
+
+%========================================================================================
+% ECUACIÓN 3.37
+
+\begin{equation} 
+\label{eq:equ337} 
+\begin{split}
+\nabla\cdot& \left[ [\mathbf{K}] \frac{k_{rn}}{\mu_{n} B_{n}}(\nabla p_n - \rho_{n,stc}\{g\})\right] + \nabla\cdot \left[ R_{s-nw}[\mathbf{K}]\frac{k_{rw}}{\mu_{w} B_{w}}(\nabla p_w - \rho_{w,stc}\{g\}) \right] \\[10pt]
+&= \left[\lambda_{nw} \frac{(\alpha - \phi)}{K_s} S''_n + \phi(1-S_w) B'_{np} + R_{s-nw}\frac{\phi}{B_w} S'_w - \frac{\phi}{B_n}S'_w \right]\dot{p_n} + \alpha \lambda_{nw} \dot{\epsilon_{v}} \\[10pt]
+&+ \left[\lambda_{nw} \frac{(\alpha - \phi)}{K_s} S''_w + \phi\frac{S_w}{B_w}R'_{wp} + \phi S_w R_{s-nw} B'_{wp} - R_{s-nw}\frac{\phi}{B_w} S'_w + \frac{\phi}{B_n}S'_w \right]\dot{p_w} 
+\end{split} 
+\end{equation}
+%========================================================================================
+
+
+\bigskip
+\textbf{C. Ecuación de esfuerzo-deformación}\bigskip
+
+%========================================================================================
+% ECUACIÓN 3.38
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ338} 
+\mathbf{L}^T [\boldsymbol D] \mathbf{L} \{\boldsymbol u\} - \alpha S''_w \nabla p_w - \alpha  S''_n \nabla p_n  = \{\boldsymbol b\}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+\bigskip
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.4
+\section{Tipos de formulaciones del modelo matemático}~\hypertarget{sec:sec340}{}
+\label{sec:sec340}
+
+Las \textit{\gls{edp}} que se han planeado hasta el momento son de primer y segundo orden. Específicamente en el modelo de flujo de fluidos, la ecuación de la difusividad hidráulica es una \textit{\acrshort{edp}} de segundo orden. Este tipo de ecuaciones se clasifican en tres tipos: (1) \textit{Elípticas}; (2) \textit{Parabólicas}; (3) \textit{Hiperbólicas}. Segun (REF) la forma canonica de este tipo de ecuaciones es :
+
+%========================================================================================
+% ECUACIÓN 3.39
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ339} 
+A \frac{\partial^2 u}{\partial x^2} + B \frac{\partial^2 u}{\partial x \partial y} + C \frac{\partial^2 u}{\partial y^2} + D \frac{\partial u}{\partial x} + E \frac{\partial u}{\partial y} + F u + G = 0
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+donde $A,B,C,D,E$ y $F$ son constantes reales y $G = G(x,y)$ es una función definida en $\mathbb{R}^2$. Se define que:
+
+\begin{itemize}[noitemsep]
+    \item La \textit{\acrshort{edp}} es \textit{Elíptica} si $B^2 - 4AC < 0$
+    \item La \textit{\acrshort{edp}} es \textit{Parabólica} si $B^2 - 4AC = 0$
+    \item La \textit{\acrshort{edp}} es \textit{Hiperbólica} si $B^2 - 4AC > 0$
+\end{itemize}
+\newpage
+%----------------------------------------------------------------------------------------
+
+Los ejemplos mas comunes en la literatura de ecuaciones \textit{Elípticas} son:\bigskip
+
+La ecuación de Laplace:
+%========================================================================================
+% ECUACIÓN 3.40
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ340} 
+\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0 \quad\to\quad \nabla\cdot(\nabla u) = 0
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+La ecuación de Poisson:
+%========================================================================================
+% ECUACIÓN 3.41
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ341} 
+\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = G(x,y) \quad\to\quad \nabla\cdot(\nabla u) = G(x,y)
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+
+Los ejemplos mas comunes en la literatura de ecuaciones \textit{Parabólicas} son:\bigskip
+
+La ecuación de calor:  
+%========================================================================================
+% ECUACIÓN 3.42
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ342} 
+\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = \frac{\partial u}{\partial t}  \quad\to\quad \nabla\cdot(\nabla u) = \dot{u}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+La ecuación de transporte:  
+%========================================================================================
+% ECUACIÓN 3.43
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ343} 
+\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = \frac{\partial u}{\partial x} + \frac{\partial u}{\partial y} + \frac{\partial u}{\partial t} \quad\to\quad  \nabla\cdot(\nabla u) = \nabla u + \dot{u}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+Los ejemplos mas comunes en la literatura de ecuaciones \textit{Hiperbólicas} son:\bigskip
+
+La ecuación de onda:
+%========================================================================================
+% ECUACIÓN 3.44
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ344} 
+A \frac{\partial^2 u}{\partial x^2} = C \frac{\partial^2 u}{\partial y^2}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+
+\bigskip
+Según \citep{aziz_petroleum_1979} las ecuaciones del modelo de flujo en condiciones bifásicas, se pueden expresar en distintas formulaciones según sea las incógnitas principales que se deseen utilizar para la solución del problema. Según lo planteado por Aziz y Settari, la ecuación de la difusividad hidráulica se puede expresar en dos tipos de formulaciones: Las formulaciones \textit{parabólicas} y las formulaciones \textit{hiperbólicas}. Las \Glsplbf{ecu} \textbf{\ref{eq:equ323}}, \textbf{\ref{eq:equ329}}, \textbf{\ref{eq:equ336}} y \textbf{\ref{eq:equ337}}, están expresadas en una formulación \textit{parabólica} $p_w$ - $p_n$, donde las incógnitas son las presiones de poros de los fluidos mojado y no mojado. Pero según \citep{aziz_petroleum_1979}, se pueden obtener las siguientes formulaciones \textit{parabólicas}:
+
+\begin{itemize}[noitemsep]
+    \item Formulación $p_w - p_n$: Presiones de poros del fluido mojado y no-mojado.
+    \item Formulación $p_w - P_c$: Presión de poros del fluido mojado y presión capilar.
+    \item Formulación $p_n - P_c$: Presión de poros del fluido no-mojado y presión capilar.
+    \item Formulación $p_w - S_w$: Presión de poros y la saturación del fluido mojado.
+    \item Formulación $p_n - S_n$: Presión de poros y la saturación del fluido no-mojado.
+    \item Formulación $p_w - S_n$: Presión de poros del fluido mojado y la saturación del no-mojado.
+    \item Formulación $p_n - S_w$: Presión de poros del fluido no-mojado y la saturación del mojado.
+\end{itemize}
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.4.1
+\subsection{Formulaciones parabólicas}~\hypertarget{sec:sec341}{}
+\label{sec:sec341}
+
+\citep{aziz_petroleum_1979} encontró en su investigación que las formulaciones mixtas como por ejemplo la formulación $p_w$ - $S_w$, tienen tiempos de simulación numérica similares comparadas con la formulación de presiones $p_w$ - $p_n$, pero el error de la formulación mixta en promedio fue 23 veces menor que la formulación de presiones. Por tal motivo es importante presentar esta formulación con las ecuaciones de los modelos \textit{multifísicos} de las secciones anteriores. En esta sección se mostrara dos formulaciones: (1) Formulación $p_w - S_w$; (2) Formulación IMPES.
+
+
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.4.1.1
+\subsubsection{Termo-Hidro-Mecánico: Formulación $p_w - S_w$}~\hypertarget{sec:sec3411}{}
+\label{sec:sec3411}
+
+\textbf{A. Ecuación de flujo del fluido mojado ($w$)}\bigskip
+
+Para obtener esta formulación se debe substituir la variación de la presión de poros del fluido no-mojado con la variación de la saturación del fluido mojado. Primero se debe despejar $\cdot{p_n}$ de la \Glsbf{ecu} \textbf{\ref{eq:equ311}}:
+
+
+%========================================================================================
+% ECUACIÓN 3.45
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ345} 
+\dot{p_n} = \dot{p_w} + \frac{\partial P_c}{\partial S_w} \dot{S_w} -\frac{\partial P_c}{\partial T} \dot{T}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+Reemplazando la \Glsbf{ecu} \textbf{\ref{eq:equ345}} en la \Glsbf{ecu} \textbf{\ref{eq:equ315}} se obtiene:
+
+%========================================================================================
+% ECUACIÓN 3.46
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ346} 
+\dot{\overline{p}} = \dot{p_w} + \left[ (1-S_w)\frac{\partial P_c}{\partial S_w} - P_c \right]\dot{S_w} + \left[ S''_T - (1-S_w)\frac{\partial P_c}{\partial T} \right]\dot{T}
+\end{gather} 
+\end{ceqn}
+%========================================================================================
+
+Reemplazando la \Glsbf{ecu} \textbf{\ref{eq:equ346}} en la \Glsbf{ecu} \textbf{\ref{eq:equ322}} se obtiene:
+
+%========================================================================================
+% ECUACIÓN 3.47
+
+\begin{equation} 
+\label{eq:equ347} 
+\begin{split}
+\nabla\cdot & \left[ \frac{[\mathbf{K}] k_{rw}}{\mu_{w} B_w} (\nabla p_w - \rho_{w}\{g\}) \right] = \left[\frac{S_w}{B_w} \frac{\alpha - \phi}{K_s} + \phi S_w  B'_{wp} \right]\dot{p_w} + \alpha \frac{S_w}{B_w}\dot{\epsilon_v} \\[10pt]
+&+ \left[ \frac{S_w}{B_w} \frac{\alpha - \phi}{K_s} \left[ (1-S_w)\frac{\partial P_c}{\partial S_w} - P_c \right] + \frac{\phi}{B_w} \right]\dot{S_w} \\[10pt]
+&+ \left[ \frac{S_w}{B_w} \frac{\alpha - \phi}{K_s} \left[ S''_T - (1-S_w)\frac{\partial P_c}{\partial T} \right] + \phi S_w B'_{wT} - (\alpha - \phi)\frac{\beta_s}{3} \frac{S_w}{B_w} \right]\dot{T}
+\end{split} 
+\end{equation}
+
+%========================================================================================
+
+
+\bigskip
+\textbf{B. Ecuación de flujo del fluido no-mojado ($n$)}\bigskip
+
+Para la ecuación del fluido mojado se debe reemplazar \Glsbf{ecu} \textbf{\ref{eq:equ345}} en la \Glsbf{ecu} \textbf{\ref{eq:equ328}} obteniendo:
+
+
+%========================================================================================
+% ECUACIÓN 3.48
+
+\begin{equation} 
+\label{eq:equ348} 
+\begin{split}
+\frac{\partial \lambda_{nw}}{\partial t} =&  \left[ \frac{S_w}{B_w}R'_{wp} + S_w R_{s-nw} B'_{wp} + (1-S_w) B'_{np} \right]\dot{p_w} \\[10pt]
+&+ \left[ \frac{R_{s-nw}}{B_w} - \frac{1}{B_n} + (1-S_w) B'_{np}\frac{\partial P_c}{\partial S_w}  \right]\dot{S_w} \\[10pt]
+&+ \left[(1-S_w)B'_{nT} +  \frac{S_w}{B_w}R'_{wT} +  S_w R_{s-nw}B'_{wT} - (1-S_w) B'_{np}\frac{\partial P_c}{\partial T} \right]\dot{T}
+\end{split} 
+\end{equation}
+%========================================================================================
+
+Reemplazando las \Glsplbf{ecu} \textbf{\ref{eq:equ346}} y \textbf{\ref{eq:equ348}} en la \Glsbf{ecu} \textbf{\ref{eq:equ324}} se obtiene:
+
+%========================================================================================
+% ECUACIÓN 3.49
+
+\begin{equation} 
+\label{eq:equ349} 
+\begin{split}
+\nabla &\cdot \left[ [\mathbf{K}] \frac{k_{rn}}{\mu_{n} B_{n}}(\nabla p_n - \rho_{n,stc}\{g\})\right] + \nabla\cdot \left[ R_{s-nw}[\mathbf{K}]\frac{k_{rw}}{\mu_{w} B_{w}}(\nabla p_w - \rho_{w,stc}\{g\}) \right] \\[10pt]
+&= \left[ \lambda_{nw} \frac{(\alpha - \phi)}{K_s} + \phi\frac{S_w}{B_w}R'_{wp} + \phi S_w R_{s-nw} B'_{wp} + \phi(1-S_w) B'_{np} \right]\dot{p_w} + \alpha \lambda_{nw} \dot{\epsilon_{v}} \\[10pt]
+&+ \left[ \lambda_{nw} \frac{(\alpha - \phi)}{K_s}\left[ (1-S_w)\frac{\partial P_c}{\partial S_w} - P_c \right] + \phi\frac{R_{s-nw}}{B_w} + \phi(1-S_w) B'_{np}\frac{\partial P_c}{\partial S_w} - \frac{\phi}{B_n} \right]\dot{S_w}\\[10pt]
+&+ \left[\lambda_{nw} \frac{(\alpha - \phi)}{K_s}\left[ S''_T - (1-S_w)\frac{\partial P_c}{\partial T} \right] - \lambda_{wn}(\alpha - \phi)\frac{\beta_s}{3} \right]\dot{T}\\[10pt]
+&+ \left[\phi(1-S_w) \left[B'_{nT} -B'_{np}\frac{\partial P_c}{\partial T} \right] +  \phi\frac{S_w}{B_w}R'_{wT} +  \phi S_w R_{s-nw}B'_{wT} \right]\dot{T}
+\end{split} 
+\end{equation}
+%========================================================================================
+
+
+\bigskip
+\textbf{C. Ecuación de esfuerzo-deformación}\bigskip
+
+El gradiente de la presión de poros promedio es igual a:
+
+%========================================================================================
+% ECUACIÓN 3.50
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ350} 
+\nabla\overline{p} = \nabla p_w + \left[ (1-S_w)\frac{\partial P_c}{\partial S_w} - P_c \right] \nabla S_w + \left[ S''_T - (1-S_w)\frac{\partial P_c}{\partial T} \right] \nabla T
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+Reemplazando la \Glsbf{ecu} \textbf{\ref{eq:equ350}} en la \Glsbf{ecu} \textbf{\ref{eq:equ34}} se obtiene:
+
+%========================================================================================
+% ECUACIÓN 3.51
+
+\begin{equation} 
+\label{eq:equ351} 
+\begin{split}
+\mathbf{L}^T [\boldsymbol D] \mathbf{L} \{\boldsymbol u\} - \alpha\nabla p_w -&\alpha \left[ (1-S_w)\frac{\partial P_c}{\partial S_w} - P_c \right] \nabla S_w \\[10pt]
+&- \left[  (1-S_w)\frac{\partial P_c}{\partial T} + 3K_m(1-\alpha)\beta_s \right] \nabla T = \{\boldsymbol b\}
+\end{split} 
+\end{equation}
+%========================================================================================
+
+\bigskip
+\textbf{D. Ecuación de energía}\bigskip
+
+%========================================================================================
+% ECUACIÓN 3.52
+
+\begin{equation} 
+\label{eq:equ352} 
+\begin{split}
+\nabla &\cdot (\lambda \nabla T ) = \nabla\cdot (\rho_w C_w\{v_w\}T + \rho_n C_n\{v_n\}T)\\[10pt]
+& + T\left[ (1-\phi)\frac{\rho_s C_s}{K_s} +\phi\rho_w C_w \frac{S_w}{K_w} +  \phi\rho_n C_n \frac{(1-S_w)}{K_n} \right]\dot{p_w} \\[10pt]
+& + T\left[ (1-\phi)\frac{\rho_s C_s}{K_s} \left[ (1-S_w)\frac{\partial P_c}{\partial S_w} - P_c\right] + \phi\rho_w C_w + \phi\rho_n C_n \left[\frac{(1-S_w)}{K_n}\frac{\partial P_c}{\partial S_w} - 1 \right] \right]\dot{S_w}\\[10pt]
+&+ \left[  (1-\phi)\rho_s C_s \left(1-\beta_s T - (1-S_w)\frac{T}{K_s}\frac{\partial P_c}{\partial T} \right) \right] \dot{T} \\[10pt]
+&+ \left[\phi\rho_w C_w S_w(1-\beta_w T) + \phi\rho_n C_n (1-S_w)\left[1-\beta_n T - \frac{T}{K_n}\frac{\partial P_c}{\partial T}\right] \right] \dot{T} 
+\end{split}
+\end{equation}
+%========================================================================================
+
+%----------------------------------------------------------------------------------------
+
+
+
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.4.1.2
+\subsubsection{Hidro-Mecánico: Formulación $p_w - S_w$}~\hypertarget{sec:sec3412}{}
+\label{sec:sec3412}
+
+El modelo Hidro-Mecánico se obtiene al asumir condiciones isotérmicas. Por lo tanto, en las \Glsplbf{ecu} \textbf{\ref{eq:equ347}}, \textbf{\ref{eq:equ349}} y \textbf{\ref{eq:equ351}} el termino del cambio de la temperatura ($\dot{T}$) es igual a cero.\bigskip
+
+\textbf{A. Ecuación de flujo del fluido mojado ($w$)}\bigskip
+
+%========================================================================================
+% ECUACIÓN 3.53
+
+\begin{equation} 
+\label{eq:equ353} 
+\begin{split}
+\nabla\cdot & \left[ \frac{[\mathbf{K}] k_{rw}}{\mu_{w} B_w} (\nabla p_w - \rho_{w}\{g\}) \right] = \left[\frac{S_w}{B_w} \frac{\alpha - \phi}{K_s} + \phi S_w  B'_{wp} \right]\dot{p_w} + \alpha \frac{S_w}{B_w}\dot{\epsilon_v} \\[10pt]
+&+ \left[ \frac{S_w}{B_w} \frac{\alpha - \phi}{K_s} \left[ (1-S_w)\frac{\partial P_c}{\partial S_w} - P_c \right] + \frac{\phi}{B_w} \right]\dot{S_w} 
+\end{split} 
+\end{equation}
+
+%========================================================================================
+
+
+\bigskip
+\textbf{B. Ecuación de flujo del fluido no-mojado ($n$)}\bigskip
+
+%========================================================================================
+% ECUACIÓN 3.54
+
+\begin{equation} 
+\label{eq:equ354} 
+\begin{split}
+\nabla &\cdot \left[ [\mathbf{K}] \frac{k_{rn}}{\mu_{n} B_{n}}(\nabla p_n - \rho_{n,stc}\{g\})\right] + \nabla\cdot \left[ R_{s-nw}[\mathbf{K}]\frac{k_{rw}}{\mu_{w} B_{w}}(\nabla p_w - \rho_{w,stc}\{g\}) \right] \\[10pt]
+&= \left[ \lambda_{nw} \frac{(\alpha - \phi)}{K_s} + \phi\frac{S_w}{B_w}R'_{wp} + \phi S_w R_{s-nw} B'_{wp} + \phi(1-S_w) B'_{np} \right]\dot{p_w} + \alpha \lambda_{nw} \dot{\epsilon_{v}} \\[10pt]
+&+ \left[ \lambda_{nw} \frac{(\alpha - \phi)}{K_s}\left[ (1-S_w)\frac{\partial P_c}{\partial S_w} - P_c \right] + \phi\frac{R_{s-nw}}{B_w} + \phi(1-S_w) B'_{np}\frac{\partial P_c}{\partial S_w} - \frac{\phi}{B_n} \right]\dot{S_w}
+\end{split} 
+\end{equation}
+%========================================================================================
+
+
+\bigskip
+\textbf{C. Ecuación de esfuerzo-deformación}\bigskip
+
+%========================================================================================
+% ECUACIÓN 3.55
+
+\begin{ceqn} 
+\begin{gather}
+\label{eq:equ355} 
+\mathbf{L}^T [\boldsymbol D] \mathbf{L} \{\boldsymbol u\} - \alpha\nabla p_w - \alpha \left[ (1-S_w)\frac{\partial P_c}{\partial S_w} - P_c \right] \nabla S_w  = \{\boldsymbol b\}
+\end{gather}  
+\end{ceqn}
+%========================================================================================
+
+
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.4.2
+\subsection{Formulación hiperbólica}~\hypertarget{sec:sec342}{}
+\label{sec:sec342}
+
+\lipsum[1-2]
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.5
+\section{Relaciones constitutivas tradicionales}~\hypertarget{sec:sec350}{}
+\label{sec:sec350}
+
+\lipsum[1-2]
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.5.1
+\subsection{Elastoplasticidad}~\hypertarget{sec:sec351}{}
+\label{sec:sec351}
+
+\lipsum[1-2]
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.5.2
+\subsection{Curvas de retención de fluidos}~\hypertarget{sec:sec352}{}
+\label{sec:sec352}
+
+\lipsum[1-2]
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.5.3
+\subsection{Curvas de parámetros PVT}~\hypertarget{sec:sec353}{}
+\label{sec:sec353}
+
+\lipsum[1-2]
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.6
+\section{Parámetros de acoplamiento}~\hypertarget{sec:sec360}{}
+\label{sec:sec360}
+
+\lipsum[1-2]
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.6.1
+\subsection{Porosidad}~\hypertarget{sec:sec361}{}
+\label{sec:sec361}
+
+\lipsum[1-2]
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.6.2
+\subsection{Permeabilidad}~\hypertarget{sec:sec362}{}
+\label{sec:sec362}
+
+\lipsum[1-2]
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.7
+\section{Modelos bifásicos en suelos y rocas}~\hypertarget{sec:sec370}{}
+\label{sec:sec370}
+
+\lipsum[1-2]
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.7.1
+\subsection{Modelo Agua-Aire sin flujo de aire}~\hypertarget{sec:sec371}{}
+\label{sec:sec371}
+
+\lipsum[1-2]
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.7.2
+\subsection{Modelo Agua-Aire con flujo de aire}~\hypertarget{sec:sec372}{}
+\label{sec:sec372}
+
+\lipsum[1-2]
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.7.3
+\subsection{Modelo Agua-Petroleo en rocas}~\hypertarget{sec:sec373}{}
+\label{sec:sec373}
+
+\lipsum[1-2]
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.7.4
+\subsection{Modelo Gas-Petroleo en rocas}~\hypertarget{sec:sec374}{}
+\label{sec:sec374}
+
+\lipsum[1-2]
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 3.8
+\section{Conclusiones}~\hypertarget{sec:sec380}{}
+\label{sec:sec380}
+
+\lipsum[1-2]
+%----------------------------------------------------------------------------------------
+

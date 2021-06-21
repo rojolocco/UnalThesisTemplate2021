@@ -1,0 +1,790 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%									TESIS DE DOCTORADO
+%								CHRISTIAN FABIAN GARCIA ROMERO
+%							   UNIVERSIDAD NACIONAL DE COLOMBIA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% LISTA DE SÍMBOLOS
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% CONFIGURACIONES INICIALES DE LA TABLA
+
+\setlength{\glsdescwidth}{15cm}
+
+\newglossary[sl1]{symbolsLAT}{sl2}{sl3}{Símbolos con letras latinas}
+\newglossary[sg1]{symbolsGRI}{sg2}{sg3}{Símbolos con letras griegas}
+\newglossary[sp1]{supIndx}{sp2}{sp3}{Superíndices}
+\newglossary[sb1]{subIndx}{sb2}{sb3}{Subíndices}
+\newglossary[se1]{siglas}{se2}{se3}{Siglas en Ingles}
+\newglossary[et1]{etiqueta}{et2}{et3}{Etiquetas}
+
+
+\makeglossaries
+
+
+\glsaddkey{unit}
+{\glsentrytext{\glslabel}unit}
+{\glsentryunit}
+{\GLsentryunit}
+{\glsunit}
+{\Glsunit}
+{\GLSunit}
+
+
+\glsaddkey{def}
+{\glsentrytext{\glslabel}def}
+{\glsentrydef}
+{\GLsentrydef}
+{\glsdef}
+{\Glsdef}
+{\GLSdef}
+
+
+\newglossarystyle{symbunitlong}{
+    \setglossarystyle{long4col}
+    \renewenvironment{theglossary}
+    {
+        \begin{longtable}
+        	{lp{0.5\glsdescwidth}>{\arraybackslash}p{2.5cm}p{2cm}}}%
+        {\end{longtable}
+    }
+    \renewcommand*{\glossaryheader}
+    {
+  		\bfseries Símbolo & \bfseries Termino & \bfseries Unidad SI & \bfseries Definición\\
+  		\hline \\
+  		\endhead
+    }
+    \renewcommand*{\glossentry}[2]
+    {
+        \glstarget{##1}{\glossentryname{##1}} 
+        & \glossentrydesc{##1}
+        & \glsentryunit{##1}
+        & \glsentrydef{##1}
+        \tabularnewline
+    }
+}
+
+
+\newcommand{\glsbf}[1]{\textbf{\gls*{#1}}}
+\newcommand{\glsplbf}[1]{\textbf{\glspl*{#1}}}
+\newcommand{\Glsbf}[1]{\textbf{\Gls*{#1}}}
+\newcommand{\Glsplbf}[1]{\textbf{\Glspl*{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%---------------------------------------------------------------------------------------
+%	LETRAS LATINAS
+
+% ENTRADA 1
+\newglossaryentry{cargaHidraulica}{
+name=\ensuremath{h},%SIMBOLO
+description={Carga Hidráulica},%TERMINO
+unit={$m$},%UNIDAD SI
+def={Ecu \ref{eq:equA1}},%DEFINICION
+type=symbolsLAT, 
+sort={h}}%ORDENAR
+
+% ENTRADA 2
+\newglossaryentry{conductividad}{
+name=\ensuremath{k},%SIMBOLO
+description={Conductividad hidráulica},%TERMINO
+unit={$m/s$},%UNIDAD SI
+def={Ecu \ref{eq:equA1}},%DEFINICION
+type=symbolsLAT, 
+sort={k}}%ORDENAR
+
+% ENTRADA 3
+\newglossaryentry{terminoFuente}{
+name=\ensuremath{Q^{\phi}},% SIMBOLO
+description={Termino fuente},% TERMINO
+unit={$m^2$},% UNIDAD SI
+def={Ecu \ref{eq:equA1}},% DEFINICION
+type=symbolsLAT, 
+sort={qphi}}% ORDENAR
+
+
+% ENTRADA 4
+\newglossaryentry{velInfiltracion}{
+name=\ensuremath{\mathbf{\{v\}}},%SIMBOLO
+description={Velocidad de infiltración},%TERMINO
+unit={$m/s$},%UNIDAD SI
+def={Ecu \ref{eq:equA1}},%DEFINICION
+type=symbolsLAT, 
+sort={v}}%ORDENAR
+
+% ENTRADA 5
+\newglossaryentry{volumenFaseI}{
+name=\ensuremath{V_{i}},%SIMBOLO
+description={Volumen de la fase i},%TERMINO
+unit={$m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA2}},%DEFINICION
+type=symbolsLAT, 
+sort={vi}}%ORDENAR
+
+% ENTRADA 6
+\newglossaryentry{saturacionFaseI}{
+name=\ensuremath{S_{i}},%SIMBOLO
+description={Grado de saturación de la fase i},%TERMINO
+unit={$Adim$},%UNIDAD SI
+def={Ecu \ref{eq:equA2}},%DEFINICION
+type=symbolsLAT, 
+sort={si}}%ORDENAR
+
+% ENTRADA 7
+\newglossaryentry{volumenPoroso}{
+name=\ensuremath{V_{p}},%SIMBOLO
+description={Volumen poroso del medio},%TERMINO
+unit={$m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA2}},%DEFINICION
+type=symbolsLAT, 
+sort={vp}}%ORDENAR
+
+% ENTRADA 8
+\newglossaryentry{masaFaseI}{
+name=\ensuremath{m_{i}},%SIMBOLO
+description={Masa de la fase i},%TERMINO
+unit={$kg$},%UNIDAD SI
+def={Ecu \ref{eq:equA2}},%DEFINICION
+type=symbolsLAT, 
+sort={mi}}%ORDENAR
+
+% ENTRADA 9
+\newglossaryentry{fvf}{
+name=\ensuremath{B},%SIMBOLO
+description={Factor volumen formación},%TERMINO
+unit={$Pa/Pa$, $m^3/m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA3}},%DEFINICION
+type=symbolsLAT, 
+sort={b}}%ORDENAR
+
+% ENTRADA 10
+\newglossaryentry{volumenEstandar}{
+name=\ensuremath{V_{I}},%SIMBOLO
+description={Volumen en condiciones estándar},%TERMINO
+unit={$m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA3}},%DEFINICION
+type=symbolsLAT, 
+sort={vi}}%ORDENAR
+
+% ENTRADA 11
+\newglossaryentry{volumenInSitu}{
+name=\ensuremath{V_{i}},%SIMBOLO
+description={Volumen en condiciones \textit{In-Situ}},%TERMINO
+unit={$m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA3}},%DEFINICION
+type=symbolsLAT, 
+sort={vi}}%ORDENAR
+
+% ENTRADA 12
+\newglossaryentry{volumenBulk}{
+name=\ensuremath{V_{b}},%SIMBOLO
+description={Volumen total o \textit{bulk}},%TERMINO
+unit={$m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA8}},%DEFINICION
+type=symbolsLAT, 
+sort={vb}}%ORDENAR
+
+% ENTRADA 13
+\newglossaryentry{tensorK}{
+name=\ensuremath{\mathbf{[K]}},%SIMBOLO
+description={Tensor de permeabilidad intrínseca},%TERMINO
+unit={$m^2$},%UNIDAD SI
+def={Ecu \ref{eq:equA12}},%DEFINICION
+type=symbolsLAT, 
+sort={k}}%ORDENAR
+
+% ENTRADA 14
+\newglossaryentry{permRelativaFaseI}{
+name=\ensuremath{k_{ri}},%SIMBOLO
+description={Permeabilidad relativa de la fase i},%TERMINO
+unit={$Adim$},%UNIDAD SI
+def={Ecu \ref{eq:equA12}},%DEFINICION
+type=symbolsLAT, 
+sort={kri}}%ORDENAR
+
+% ENTRADA 15
+\newglossaryentry{fvfFaseI}{
+name=\ensuremath{B_{i}},%SIMBOLO
+description={Factor volumen formación de la fase i},%TERMINO
+unit={$Pa/Pa$, $m^3/m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA12}},%DEFINICION
+type=symbolsLAT, 
+sort={bi}}%ORDENAR
+
+% ENTRADA 16
+\newglossaryentry{presionPorosFaseI}{
+name=\ensuremath{p_{i}},%SIMBOLO
+description={Presion de poros de la fase i},%TERMINO
+unit={$Pa$},%UNIDAD SI
+def={Ecu \ref{eq:equA12}},%DEFINICION
+type=symbolsLAT, 
+sort={pi}}%ORDENAR
+
+% ENTRADA 17
+\newglossaryentry{gravedad}{
+name=\ensuremath{\mathbf{\{g\}}},%SIMBOLO
+description={Aceleración de la gravedad},%TERMINO
+unit={$m/s^2$},%UNIDAD SI
+def={Ecu \ref{eq:equA12}},%DEFINICION
+type=symbolsLAT, 
+sort={g}}%ORDENAR
+
+% ENTRADA 18
+\newglossaryentry{presionMedia}{
+name=\ensuremath{\overline{p}},%SIMBOLO
+description={Presión de poros promedio},%TERMINO
+unit={$Pa$},%UNIDAD SI
+def={Ecu \ref{eq:equA14}},%DEFINICION
+type=symbolsLAT, 
+sort={p}}%ORDENAR
+
+% ENTRADA 19
+\newglossaryentry{temperatura}{
+name=\ensuremath{T},%SIMBOLO
+description={Temperatura},%TERMINO
+unit={$\circ K$},%UNIDAD SI
+def={Ecu \ref{eq:equA14}},%DEFINICION
+type=symbolsLAT, 
+sort={t}}%ORDENAR
+
+% ENTRADA 20
+\newglossaryentry{coeficienteVolSolidos}{
+name=\ensuremath{K_{s}},%SIMBOLO
+description={Coeficiente volumétrico de los solidos},%TERMINO
+unit={$Pa$},%UNIDAD SI
+def={Ecu \ref{eq:equA14}},%DEFINICION
+type=symbolsLAT, 
+sort={km}}%ORDENAR
+
+% ENTRADA 21
+\newglossaryentry{coeficienteVolFaseI}{
+name=\ensuremath{K_{i}},%SIMBOLO
+description={Coeficiente volumétrico de la fase i},%TERMINO
+unit={$Pa$},%UNIDAD SI
+def={Ecu \ref{eq:equA19}},%DEFINICION
+type=symbolsLAT, 
+sort={ki}}%ORDENAR
+
+% ENTRADA 22
+\newglossaryentry{solubilidadFaseI}{
+name=\ensuremath{R_{s-ij}},%SIMBOLO
+description={Razón de solubilidad de la fase i},%TERMINO
+unit={$m^3/m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA18}},%DEFINICION
+type=symbolsLAT, 
+sort={rsij}}%ORDENAR
+
+% ENTRADA 23
+\newglossaryentry{capacidadFaseI}{
+name=\ensuremath{C_{i}},%SIMBOLO
+description={Capacidad calórica especifica de la fase i},%TERMINO
+unit={$m^3/m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA34}},%DEFINICION
+type=symbolsLAT, 
+sort={ci}}%ORDENAR
+
+% ENTRADA 24
+\newglossaryentry{capacidadSolidos}{
+name=\ensuremath{C_{s}},%SIMBOLO
+description={Capacidad calórica especifica de los solidos},%TERMINO
+unit={$m^3/m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA35}},%DEFINICION
+type=symbolsLAT, 
+sort={cs}}%ORDENAR
+
+% ENTRADA 25
+\newglossaryentry{terminoFuenteTemp}{
+name=\ensuremath{Q^{T}},% SIMBOLO
+description={Termino fuente de temperatura},% TERMINO
+unit={$\circ K$},% UNIDAD SI
+def={Ecu \ref{eq:equA34}},% DEFINICION
+type=symbolsLAT, 
+sort={qt}}% ORDENAR
+
+% ENTRADA 26
+\newglossaryentry{velInfiltracionFaseI}{
+name=\ensuremath{\mathbf{\{v_{i}\}}},%SIMBOLO
+description={Velocidad de infiltración de la fase i},%TERMINO
+unit={$m/s$},%UNIDAD SI
+def={Ecu \ref{eq:equA1}},%DEFINICION
+type=symbolsLAT, 
+sort={v}}%ORDENAR
+
+% ENTRADA 27
+\newglossaryentry{tiempo}{
+name=\ensuremath{t},%SIMBOLO
+description={Tiempo},%TERMINO
+unit={$s$},%UNIDAD SI
+def={Ecu \ref{eq:equA1}},%DEFINICION
+type=symbolsLAT, 
+sort={t}}%ORDENAR
+
+% ENTRADA 28
+\newglossaryentry{operadorL}{
+name=\ensuremath{\mathbf{L}},%SIMBOLO
+description={Operador diferencial de deformaciones},%TERMINO
+unit={$Adim$},%UNIDAD SI
+def={Ecu \ref{eq:equA23}},%DEFINICION
+type=symbolsLAT, 
+sort={l}}%ORDENAR
+
+% ENTRADA 29
+\newglossaryentry{fuerzaCuerpo}{
+name=\ensuremath{b},%SIMBOLO
+description={Fuerza de cuerpo},%TERMINO
+unit={$N/m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA22}},%DEFINICION
+type=symbolsLAT, 
+sort={b}}%ORDENAR
+
+% ENTRADA 29
+\newglossaryentry{vectorFuerzasCuerpo}{
+name=\ensuremath{\mathbf{\{b\}}},%SIMBOLO
+description={Fuerzas de cuerpo},%TERMINO
+unit={$N/m^3$},%UNIDAD SI
+def={Ecu \ref{eq:equA24}},%DEFINICION
+type=symbolsLAT, 
+sort={b}}%ORDENAR
+
+% ENTRADA 30
+\newglossaryentry{vectorIdentidad}{
+name=\ensuremath{\mathbf{\{I\}}},%SIMBOLO
+description={Vector Identidad},%TERMINO
+unit={$Adim$},%UNIDAD SI
+def={Ecu \ref{eq:equA26}},%DEFINICION
+type=symbolsLAT, 
+sort={i}}%ORDENAR
+
+% ENTRADA 31
+\newglossaryentry{matrizRigidez}{
+name=\ensuremath{\mathbf{[D]}},%SIMBOLO
+description={Matriz de rigidez del modelo constitutivo},%TERMINO
+unit={$Pa$},%UNIDAD SI
+def={Ecu \ref{eq:equA26}},%DEFINICION
+type=symbolsLAT, 
+sort={d}}%ORDENAR
+
+% ENTRADA 32
+\newglossaryentry{desplazamiento}{
+name=\ensuremath{u},%SIMBOLO
+description={Desplazamiento},%TERMINO
+unit={$m$},%UNIDAD SI
+def={Ecu \ref{eq:equA30}},%DEFINICION
+type=symbolsLAT, 
+sort={u}}%ORDENAR
+
+% ENTRADA 33
+\newglossaryentry{incrementoDesplazamiento}{
+name=\ensuremath{d\mathbf{\{u\}}},%SIMBOLO
+description={Incremento en los desplazamientos},%TERMINO
+unit={$m$},%UNIDAD SI
+def={Ecu \ref{eq:equA31}},%DEFINICION
+type=symbolsLAT, 
+sort={u}}%ORDENAR
+
+% ENTRADA 34
+\newglossaryentry{vectorDesplazamiento}{
+name=\ensuremath{\mathbf{\{u\}}},%SIMBOLO
+description={Desplazamientos},%TERMINO
+unit={$m$},%UNIDAD SI
+def={Ecu \ref{eq:equA30}},%DEFINICION
+type=symbolsLAT, 
+sort={u}}%ORDENAR
+
+% ENTRADA 35
+\newglossaryentry{matrizElastica}{
+name=\ensuremath{\mathbf{[D_e]}},%SIMBOLO
+description={Matriz elastica del modelo constitutivo},%TERMINO
+unit={$Pa$},%UNIDAD SI
+def={Ecu \ref{eq:equ36}},%DEFINICION
+type=symbolsLAT, 
+sort={d}}%ORDENAR
+
+% ENTRADA 35
+\newglossaryentry{moduloElasticidad}{
+name=\ensuremath{E},%SIMBOLO
+description={Modulo de elasticidad del medio},%TERMINO
+unit={$Pa$},%UNIDAD SI
+def={Ecu \ref{eq:equ36}},%DEFINICION
+type=symbolsLAT, 
+sort={e}}%ORDENAR
+%---------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%---------------------------------------------------------------------------------------
+%	LETRAS GRIEGAS
+
+% ENTRADA 1
+\newglossaryentry{densidad}{
+name=\ensuremath{\rho},
+description={Densidad},
+unit={$Kg/m^3$}, 
+def={Ecu \ref{eq:equA1}},
+type=symbolsGRI}
+
+% ENTRADA 2
+\newglossaryentry{coeficienteDifusividad}{
+name=\ensuremath{\Gamma},%SIMBOLO
+description={Coeficiente de difusividad},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA1}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 3
+\newglossaryentry{var}{
+name=\ensuremath{\phi},%SIMBOLO
+description={Variable a resolver},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA1}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 4
+\newglossaryentry{densidadFaseI}{
+name=\ensuremath{\rho_{i}},%SIMBOLO
+description={Densidad de la fase i},%TERMINO
+unit={$kg/m^3$},% UNIDAD SI
+def={Ecu \ref{eq:equA2}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 5
+\newglossaryentry{densidadEstandar}{
+name=\ensuremath{\rho_{I}},%SIMBOLO
+description={Densidad en condiciones estandar},%TERMINO
+unit={$kg/m^3$},% UNIDAD SI
+def={Ecu \ref{eq:equA3}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 6
+\newglossaryentry{densidadInSitu}{
+name=\ensuremath{\rho_{i}},%SIMBOLO
+description={Densidad en condiciones \textit{In-Situ}},%TERMINO
+unit={$kg/m^3$},% UNIDAD SI
+def={Ecu \ref{eq:equA3}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 7
+\newglossaryentry{porosidad}{
+name=\ensuremath{\phi},%SIMBOLO
+description={Porosidad del medio},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA8}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 8
+\newglossaryentry{viscosidadFaseI}{
+name=\ensuremath{\mu_{i}},%SIMBOLO
+description={Viscosidad dinámica de la fase i},%TERMINO
+unit={$Pa \cdot s$},% UNIDAD SI
+def={Ecu \ref{eq:equA12}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 9
+\newglossaryentry{coeficienteBiot}{
+name=\ensuremath{\alpha},%SIMBOLO
+description={Coeficiente de Biot},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA14}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 10
+\newglossaryentry{coeficienteExpansion}{
+name=\ensuremath{\beta},%SIMBOLO
+description={Coeficiente de expansión térmica},%TERMINO
+unit={$m^3/m^3/ \circ K$},% UNIDAD SI
+def={Ecu \ref{eq:equA14}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 11
+\newglossaryentry{deformacionVol}{
+name=\ensuremath{\epsilon_{v}},%SIMBOLO
+description={Deformación volumétrica},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA14}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 12
+\newglossaryentry{conductividadTemp}{
+name=\ensuremath{\lambda},%SIMBOLO
+description={Coeficiente de conductividad térmica},%TERMINO
+unit={$\circ K$},% UNIDAD SI
+def={Ecu \ref{eq:equA34}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 13
+\newglossaryentry{densidadMedia}{
+name=\ensuremath{\overline{\rho}},%SIMBOLO
+description={Densidad media},%TERMINO
+unit={$kg/m^3$},% UNIDAD SI
+def={Ecu \ref{eq:equA34}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 14
+\newglossaryentry{densidadSolidos}{
+name=\ensuremath{\rho_{s}},%SIMBOLO
+description={Densidad de los solidos},%TERMINO
+unit={$kg/m^3$},% UNIDAD SI
+def={Ecu \ref{eq:equA35}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 15
+\newglossaryentry{coeficienteExpansionSolidos}{
+name=\ensuremath{\beta_s},%SIMBOLO
+description={Coeficiente de expansión térmica de los solidos},%TERMINO
+unit={$m^3/m^3/ \circ K$},% UNIDAD SI
+def={Ecu \ref{eq:equA14}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 16
+\newglossaryentry{coeficienteExpansionFaseI}{
+name=\ensuremath{\beta_i},%SIMBOLO
+description={Coeficiente de expansión térmica de la fase i},%TERMINO
+unit={$m^3/m^3/ \circ K$},% UNIDAD SI
+def={Ecu \ref{eq:equA14}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 17
+\newglossaryentry{gradiente}{
+name=\ensuremath{\nabla},%SIMBOLO
+description={Operador diferencial gradiente},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA1}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 18
+\newglossaryentry{esfuerzoNormal}{
+name=\ensuremath{\sigma},%SIMBOLO
+description={Esfuerzo normal},%TERMINO
+unit={$Pa$},% UNIDAD SI
+def={Ecu \ref{eq:equA22}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 19
+\newglossaryentry{esfuerzoCortante}{
+name=\ensuremath{\tau},%SIMBOLO
+description={Esfuerzo cortante},%TERMINO
+unit={$Pa$},% UNIDAD SI
+def={Ecu \ref{eq:equA22}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 20
+\newglossaryentry{esfuerzoTotal}{
+name=\ensuremath{\{\boldsymbol\sigma\}},%SIMBOLO
+description={Esfuerzo total},%TERMINO
+unit={$Pa$},% UNIDAD SI
+def={Ecu \ref{eq:equA24}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 21
+\newglossaryentry{esfuerzoEfectivo}{
+name=\ensuremath{\sigma'},%SIMBOLO
+description={Esfuerzo efectivo},%TERMINO
+unit={$Pa$},% UNIDAD SI
+def={Ecu \ref{eq:equA25}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 22
+\newglossaryentry{vectorEsfuerzosEfectivos}{
+name=\ensuremath{\{\boldsymbol\sigma'\}},%SIMBOLO
+description={Esfuerzos efectivos},%TERMINO
+unit={$Pa$},% UNIDAD SI
+def={Ecu \ref{eq:equA26}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 23
+\newglossaryentry{incrementoEsfuerzoEfectivo}{
+name=\ensuremath{d\{\boldsymbol\sigma'\}},%SIMBOLO
+description={Incremento en los esfuerzos efectivos},%TERMINO
+unit={$Pa$},% UNIDAD SI
+def={Ecu \ref{eq:equA28}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 24
+\newglossaryentry{incrementoDeformaciones}{
+name=\ensuremath{d\{\boldsymbol\epsilon\}},%SIMBOLO
+description={Incremento de deformación total},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA28}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 25
+\newglossaryentry{incrementoDeformacionesTemp}{
+name=\ensuremath{d\{\boldsymbol\epsilon_{T}\}},%SIMBOLO
+description={Incremento de deformación de temperatura},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA28}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 26
+\newglossaryentry{deformacionNormal}{
+name=\ensuremath{\epsilon},%SIMBOLO
+description={Deformación normal},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA29}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 27
+\newglossaryentry{deformacionCortante}{
+name=\ensuremath{\gamma},%SIMBOLO
+description={Deformación cortante},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA29}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 28
+\newglossaryentry{poisson}{
+name=\ensuremath{\nu},%SIMBOLO
+description={Modulo de Poisson},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equ36}},
+type=symbolsGRI}% ORDENAR
+
+% ENTRADA 29
+\newglossaryentry{divergente}{
+name=\ensuremath{\nabla\cdot},%SIMBOLO
+description={Operador diferencial divergente},%TERMINO
+unit={$Adim$},% UNIDAD SI
+def={Ecu \ref{eq:equA1}},
+type=symbolsGRI}% ORDENAR
+%---------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%---------------------------------------------------------------------------------------
+%	SUBÍNDICES
+
+% ENTRADA 1
+\newglossaryentry{FaseI}{
+name={$i$},
+description={Fase del liquido $i$},
+type=subIndx}
+
+% ENTRADA 2
+\newglossaryentry{condicionEstandar}{
+name={$I$},
+description={Condiciones estándar},
+type=subIndx}
+
+% ENTRADA 3
+\newglossaryentry{condicionesInSitu}{
+name={$i$},
+description={Condiciones \textit{In-Situ}},
+type=subIndx}
+
+% ENTRADA 4
+\newglossaryentry{FaseJ}{
+name={$j$},
+description={Fase del liquido $j$},
+type=subIndx}
+
+%---------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%---------------------------------------------------------------------------------------
+%	SUPERINDICES
+
+% ENTRADA 1
+\newglossaryentry{timIndx}{
+name={t},
+description={Indice de tiempo},
+type=supIndx}
+
+% ENTRADA 2
+\newglossaryentry{timIndx2}{
+name={0},
+description={Tiempo inicial},
+type=supIndx}
+
+% ENTRADA 3
+\newglossaryentry{timIndx3}{
+name={u},
+description={Cargas Nodales},
+type=supIndx}
+
+% ENTRADA 4
+\newglossaryentry{timIndx4}{
+name={p},
+description={Termino fuente},
+type=supIndx}
+
+% ENTRADA 5
+\newglossaryentry{timIndx5}{
+name={$T$},
+description={Transpuesta de la matriz},
+type=supIndx}
+%---------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%---------------------------------------------------------------------------------------
+%	ABREVIATURAS EN ESPAÑOL
+
+\newacronym{ia}{IA}{Inteligencia Artificial}
+\newacronym{ann}{ANN}{Redes Neuronales Artificiales}
+\newacronym{edp}{EDP}{Ecuaciones Diferenciales Parciales}
+\newacronym{hm}{HM}{Hidro-Mecánico}
+\newacronym{thm}{THM}{Termo-Hidro-Mecánico}
+%---------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%---------------------------------------------------------------------------------------
+%	ABREVIATURAS EN INGLES
+
+% ENTRADA 1
+\newglossaryentry{gpu}{
+name={GPU},
+description={Graphics Processing Unit},
+type=siglas}
+
+% ENTRADA 2
+\newglossaryentry{gpgpu}{
+name={GPGPU},
+description={General-Purpose Computing on Graphics Processing Units},
+type=siglas}
+
+% ENTRADA 3
+\newglossaryentry{immpm}{
+name={IMMPM},
+description={Intelligent Multiphysics Model in Porous Media},
+type=siglas}
+%---------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%---------------------------------------------------------------------------------------
+%	ETIQUETAS
+
+% ENTRADA 1
+\newglossaryentry{ecu}{
+name=ecuación,
+description={Ecuacion},
+plural=ecuaciones,
+type=etiqueta}
+
+% ENTRADA 2
+\newglossaryentry{fig}{
+name=figura,
+description={Figura},
+plural=figuras,
+type=etiqueta}
+
+% ENTRADA 3
+\newglossaryentry{tab}{
+name=tabla,
+description={Tabla},
+plural=tablas,
+type=etiqueta}
+%---------------------------------------------------------------------------------------

@@ -1,0 +1,276 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%									TESIS DE DOCTORADO
+%							  CHRISTIAN FABIAN GARCIA ROMERO
+%							 UNIVERSIDAD NACIONAL DE COLOMBIA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% PRIMER CAPITULO: INTRODUCCIÓN
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+% CAPITULO 1
+\pagestyle{fancy}
+\chapter{Introducción}~\hypertarget{ch:chapter_01}{}
+\label{ch:chapter_01}
+\thispagestyle{empty}
+\normalsize
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 1.1
+\section{Modelamiento Multifísico}~\hypertarget{sec:sec110}{}
+\label{sec:sec110}
+
+
+Los seres humanos vivimos en un mundo \textit{multifísico}. Los fenómenos que analizamos y experimentamos a diario son principalmente \textit{multifísicos}. Estos fenómenos naturales son modelados a partir de teoría e involucran diferentes escalas espacio-temporales. Fenómenos como la deformación de sólidos, el flujo de fluidos, la transferencia de calor, las reacciones químicas de diversos compuestos, los sistemas electro-magnéticos, son ejemplos representativos de los fenómenos que se estudian e investigan en el día a día de la ciencia y la ingeniería.\bigskip
+
+En el estudio de los medios porosos es común el análisis de estos fenómenos de manera monolítica o no-acoplada. Por ejemplo, el estudio del flujo de fluidos en medios porosos es un área de investigación que tradicionalmente se investiga de manera independiente a otros fenómenos físicos y químicos \citep{matringe_mixed_2008,eslinger_discontinuous_2005,lu_iteratively_2008}. Este análisis simplificado es válido en problemas donde los efectos de los otros modelos físicos no influyen de manera significativa en la representatividad de los resultados.\bigskip
+
+Pero no todos los problemas de flujo de fluidos se pueden analizar de manera independiente. Por ejemplo, en el análisis de asentamientos y consolidaciones en suelos blandos es estrictamente necesario el acoplamiento de los fenómenos físicos de flujo de fluidos y de esfuerzo-deformación. A partir de las teorías de \citep{terzaghi_erdbaumechanik_1925,terzaghi_theoretical_1943} y \citep{biot_general_1941}, se han realizado una gran cantidad de investigaciones en este campo \citep{ghaboussi_flow_1973,simon_analytical_1984,zienkiewicz_dynamic_1984,lewis_finite_1999}. Todas estas investigaciones son de carácter \textit{multifísico} y han tenido en mayor o menor medida resultados representativos a la realidad del problema.\bigskip
+
+El análisis \textit{multifísico} no es nuevo en la ingeniería civil, como se puede ver desde la época de Terzagui y Biot se vienen analizando fenómenos en suelos de manera \textit{multifísica}. Pero en la práctica diaria de la geotecnia es común el análisis por separado de estos modelos físicos. Las razones de esta práctica simplificada son diversas pero las mas importantes son influenciadas por los tiempos de simulación numérica, falta de simuladores \textit{multifísicos} eficientes, prácticas tradicionales monolíticas, entre otras.\bigskip
+
+Otra área importante en la ingeniería que estudia el flujo de fluidos en medios porosos es la ingeniería de reservorios. Esta área de investigación analiza la producción de hidrocarburos en yacidas de petróleo y gas. Las grandes compañías petroleras utilizan simuladores numéricos para analizar la producción de estos fluidos de manera cotidiana. Todos estos simuladores utilizan el modelo de flujo de fluidos de manera independiente principalmente por el gran costo computacional que demanda incluir los efectos geomecánicos en sus análisis diarios \citep{settari_advances_2001,thomas_coupled_2003,tran_overview_2005}. Estos análisis se deben hacer en tiempo real para la toma de decisiones que influyen económicamente en sus proyectos.\bigskip
+
+Pero cuando se necesitan análisis más profundos que requieran mayor precisión y exactitud y el factor tiempo no sea determinante, generalmente se hacen análisis acoplados con los modelos de flujo y esfuerzo-deformación. Esto ocurre generalmente en las etapas de diseño de la explotación de la yacida. En esta etapa se necesita que las simulaciones numéricas sean lo mas exactas y precisas posibles para que los diseños del proyecto sean económicamente viables.\bigskip
+
+Por todo lo ya expuesto, la principal ventaja del modelamiento \textit{multifísico} es obtener resultados más acordes a la realidad del problema. Esta característica es deseable en todos los proyectos de ingeniería, ya que se evitan problemas de carácter económico, social, ambiental, operacional, entre otros. La pregunta que nos deberíamos hacer es: ¿Es estrictamente necesario el uso de la modelación \textit{multifísica} en todos nuestros proyectos de ingeniería?\bigskip
+
+Una respuesta rápida a esta pregunta es: No, no es estrictamente necesario. Pero como saber cuándo usar o no el modelamiento \textit{multifísico}. En gran medida lo que busca este proyecto es resolver esta incógnita. Esta investigación propone un nuevo marco metodológico para el modelamiento \textit{multifísico} en suelos y rocas. Este nuevo marco metodológico, el cual ha sido llamado "\textit{\glsdesc{immpm}}" (\textit{\Gls{immpm}}), busca hacer modelamiento \textit{multifísico} de manera eficiente, en problemas donde el acoplamiento de diversos modelos físicos incremente de manera significativa la calidad de los resultados.\bigskip
+
+Pero el modelamiento \textit{multifísico} conlleva dos grandes desventajas: Incremento en los tiempos de simulación y disminución en la escalabilidad del modelo. Estas desventajas se pueden abordar de distintas maneras, pero en este proyecto se solventará por medio del uso de computación paralela basada en \Gls{gpgpu}\footnote{Por sus siglas en ingles "\textit{\glsdesc{gpgpu}}"}. Al final de este proyecto se obtendrá un nuevo marco metodológico con todas las ventajas del modelamiento \textit{multifísico}, y con la gran característica de ser computacionalmente eficiente, para ser aplicado en problemas que involucre el flujo de fluidos en suelos y rocas.\bigskip
+
+Otra pregunta importante a resolver es: ¿Por si solo el modelamiento \textit{multifísico} garantiza representatividad de la realidad del problema? La respuesta rápida es no. Existen distintas fuentes de error a la hora de hacer el modelamiento de las distintas físicas que se estudian en el comportamiento de los medios porosos:
+
+\begin{itemize}[noitemsep]
+    \item Simplificaciones: Geometría, modelo matemático, contorno, entre otras.
+    \item Datos de entrada incorrectos
+    \item Incerteza de los parámetros de los modelos
+    \item Modelos constitutivos no representativos de la realidad
+    \item Mala interpretación de los resultados
+\end{itemize}
+
+De todas las fuentes de error enumeradas, el modelamiento constitutivo es el mas complicado de solventar. Las simplificaciones se pueden obviar si se tiene los recursos computacionales necesarios, con una campaña de obtención de datos de campo y de laboratorio estricta se pueden solventar los datos erróneos y las incertezas, con una base teórica robusta se pueden evitar la mala interpretación de los resultados de las simulaciones numéricas.\bigskip
+
+Pero con el modelamiento constitutivo no ocurre lo mismo. Particularmente cuando se habla de modelos constitutivos mecánicos en suelos y rocas, se puede afirmar que la representatividad de estos modelos es baja \citep{sidarta_constitutive_1998,ghaboussi_autoprogressive_1998, ghaboussi_new_1998}. Existen muchos modelos constitutivos en la literatura, los cuales tienen sus alcances y limitaciones. Estos modelos son aproximaciones del comportamiento real de estos medios porosos. Los suelos y rocas son materiales heterogéneos, anisotrópicos, en muchos casos se encuentran en condiciones no-saturadas, tienen comportamientos mecánicos elastoplásticos, y en definitiva son materiales complejos que son difíciles de representar.\bigskip
+
+En los modelos constitutivos hidráulicos ocurre algo similar en cuanto a representatividad. Por lo general el comportamiento hidráulico de los suelos y rocas se representa con curvas de retención de fluidos. Existen expresiones matemáticas que buscan modelar este tipo de curvas y son de amplio conocimiento en la literatura \citep{fredlund_unsaturated_2012,briaud_geotechnical_2013}. Pero estas expresiones en realidad son correlaciones empíricas basadas en experiencias de laboratorio, y no en teorías, como en el caso de los modelos constitutivos mecánicos. Estos modelos también son aproximaciones del comportamiento hidráulico real del medio poroso, con los mismos alcances y limitaciones de los modelos mecánicos.\bigskip
+
+En la literatura se han aplicado diversas metodologías para la predicción constitutiva de comportamientos mecánicos en suelos \citep{cabalar_applications_2012,faramarzi_epr-based_2014,zhao_material_2015}. Las que han obtenido mayor representatividad son las basadas en el uso de \textit{Redes Neuronales Artificiales} \cite{man_neural_2011,masi_thermodynamics-based_2021,zhang_application_2021}. También existen varias investigaciones sobre el uso de estas técnicas de inteligencia artificial en la predicción de curvas de retención de agua en suelos \citep{saha_prediction_2018,zainal_prediction_2018,pham_analysis_2019}. En esta investigación se propone el uso de esta herramienta de inteligencia artificial para la predicción constitutiva de los medios porosos y los fluidos que los saturan. Finalmente, la nueva metodología lo que busca es aplicar nuevas técnicas y herramientas de simulación numérica para mejorar la calidad de los resultados de manera eficiente, para poder obtener resultados representativos de la realidad en tiempo real.
+
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 1.2
+\section{Objetivos de la investigación}~\hypertarget{sec:sec120}{}
+\label{sec:sec120}
+
+
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 1.2.1
+\subsection{Objetivo principal}~\hypertarget{sec:sec121}{}
+\label{sec:sec121}
+
+Es objetivo principal de esta investigación la formulación e implementación de un nuevo marco metodológico para la simulación numérica de modelos \textit{multifísicos} en suelos y rocas. El nuevo marco metodológico fue llamado, "\textit{\glsdesc{immpm}}" (\textit{\Gls{immpm}}), y se caracteriza por: 
+
+\begin{enumerate}[noitemsep]
+    \item Acoplar distintos modelos físicos para incrementar la calidad de los análisis.
+    \item Ser computacionalmente eficiente (i.e. tiempos de simulación numérica menores).
+    \item Utilizar modelos de predicción constitutiva basados en inteligencia artificial.
+    \item Ser capaz en determinar en qué problemas puede ser aplicado.
+\end{enumerate}
+
+%----------------------------------------------------------------------------------------
+
+
+
+%........................................................................................
+%----------------------------------------------------------------------------------------
+% SECCIÓN 1.2.2
+\subsection{Objetivos específicos}~\hypertarget{sec:sec122}{}
+\label{sec:sec122}
+
+Del cumplimiento del objetivo principal de esta investigación se obtendrá paralelamente el cumplimiento de los siguientes objetivos específicos:
+
+\begin{enumerate}[noitemsep]
+    \item Utilizar la metodología de acoplamiento \textit{Multirate}, para acoplar de manera iterativa los modelos de flujo de fluidos, esfuerzo-deformación y transferencia de calor.
+    
+    \item Utilizar los métodos de Galerkin para la discretización de los modelos \textit{multifísicos}.
+    
+    \item Utilizar metodologías más eficientes en la solución de sistemas de ecuaciones diferenciales no-lineales (e.g. Método de la región de confianza, Homopatía).
+   
+    \item Utilizar metodologías iterativas o \textit{multigrid}, en la solución de sistemas lineales.
+    
+    \item Utilizar técnicas de computación paralela basada en \Gls{gpgpu} en la solución de los sistemas de ecuaciones lineales y en el entrenamiento de redes neuronales artificiales.
+   
+    \item Sustituir los modelos constitutivos tradicionales, tanto mecánicos como hidráulicos, por modelos de predicción basado en redes neuronales artificiales.
+    
+    \item Formular el nuevo marco metodológico con todas las técnicas y mejoras propuestas.
+   
+    \item Implementar el nuevo marco metodológico en una librería creada con lenguaje Julia\footnote{Ver https://julialang.org/}.
+    
+    \item Formular e implementar simulaciones numéricas en los casos de estudio propuestos para la validación del código creado.
+    
+    \item Hacer un análisis detallado de los resultados de las simulaciones numéricas y realizar las conclusiones respectivas.
+    
+    \item Proponer trabajos futuros que puedan ser realizados a partir de este proyecto de investigación.
+\end{enumerate}
+
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 1.3
+\section{Formulaciones e implementaciones}~\hypertarget{sec:sec130}{}
+\label{sec:sec130}
+
+Del cumplimiento de los objetivos de esta investigación se obtendrá paralelamente las siguientes formulaciones e implementaciones:
+
+\begin{itemize}[noitemsep]
+    \item Formulación del modelo matemático para el acoplamiento total y \textit{multirate} hidro-mecánico, para cuatro tipos de modelos bifásicos: (1) Modelo de flujo Aire-Agua, sin flujo de aire; (2) Modelo de flujo Aire-Agua, con flujo de aire; (3) Modelo de flujo Agua-Petróleo; (4) Modelo de flujo Gas-Petróleo.
+    
+    \item Formulación del modelo matemático para el acoplamiento total y \textit{multirate} termo-hidro-mecánico, para cuatro tipos de modelos bifásicos: (1) Modelo de flujo Aire-Agua, sin flujo de aire; (2) Modelo de flujo Aire-Agua, con flujo de aire; (3) Modelo de flujo Agua-Petróleo; (4) Modelo de flujo Gas-Petróleo.
+    
+    \item Formulación e implementación con ayuda de los métodos de \textit{Galerkin} de los modelos bifásicos en acoplamiento \textit{multirate} para los modelos \textit{multifísicos} hidro-mecánico y termo-hidro-mecánico.
+    
+    \item Formulación y entrenamiento de redes neuronales artificiales para la creación de modelos de predicción constitutiva mecánica e hidráulica.
+    
+    \item Implementación de los modelos de predicción constitutiva mecánica e hidráulica en los modelos de acoplamiento \textit{multifísico}.
+    
+    \item Formulación del nuevo marco metodológico "\textit{\glsdesc{immpm}}".
+    
+    \item Formulación e implementación del nuevo marco metodológico en lenguaje Julia. De esta implementación se obtendrá una librearía, para la simulación numérica de problemas acoplados \textit{multifísico} en suelos y rocas.
+    
+    \item Formulación e implementación de las mejoras necesarias para que la librería corra en paralelo con ayuda de unidades de procesamiento gráfico.
+    
+    \item Formulación e implementación de metodologías de verificación y validación para ser aplicadas en el nuevo marco metodológico.
+    
+    \item Formulación e implementación de los casos de estudio propuestos en este proyecto.
+\end{itemize}
+
+Todas las implementaciones se realizaron con lenguaje Julia y están condensadas en la librería que se denominó \textit{PoroMediaMultiphysics.jl}\footnote{Ver https://github.com/Poro-Multiphysics}. Esta librería es un \textit{toolbox}, para la simulación de problemas acoplados en suelos y rocas, de carácter \textit{Open-Source}, y tiene una licencia \textit{MIT} para su uso\footnote{Ver https://opensource.org/licenses/mit-license.php}. Esta librería como tal no es un software tradicional de elementos finitos, sino por el contrario, son una serie de funciones que en su totalidad permiten la simulación numérica de diversos problemas de flujo en suelos y rocas de manera eficiente y con resultados representativos de la realidad.
+
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 1.4
+\section{Alcance y limitaciones}~\hypertarget{sec:sec140}{}
+\label{sec:sec140}
+
+Como el universo de posibilidades en problemas de flujo es amplio se van a establecer los siguientes alcances y limitaciones:
+
+\begin{enumerate}%[noitemsep]
+    \item Se va restringir el flujo a problemas en medios porosos parcialmente saturados donde fluye dos tipos de fluido. Este tipo de fenómeno se conoce como flujo bifásico, donde existe un fluido que moja preferencialmente el medio poroso (i.e. fluido mojado) y un fluido con una menor tendencia de mojar el medio poroso (i.e fluido no-mojado).
+    
+    \item Las deformaciones que experimenta el medio son pequeñas comparadas con el dominio del problema. Por lo tanto, no se utilizará ninguna teoría sobre grandes deformaciones.
+    
+    \item El nuevo marco metodológico no hace implementaciones de ningún modelo constitutivo clásico. Todos estos modelos son reemplazados por los modelos de predicción constitutiva entrenados con redes neuronales.
+    
+    \item Solo se utilizará técnicas de computación paralela basada en \gls{gpgpu}. Ningún otro tipo de técnica de computación de alto desempeño será utilizado.
+    
+    \item Todas las simulaciones numéricas del nuevo marco metodológico se harán con la librería en lenguaje Julia creada para tal fin. Solo se utilizarán otras librerías o software comercial para comparar los resultados obtenidos con la librería \textit{PoroMediaMultiphysics.jl}
+    
+    \item Las simulaciones numéricas se harán en geometrías 2D y/o Axisimétricas. A pesar de esta restricción, el nuevo marco metodológico es válido para problemas 3D. Se dejará esa implementación para trabajos futuros.
+    
+    \item Cuando se haga modelamiento de transferencia de calor, las temperaturas que se modelen deben estar entre el punto de ebullición y el punto de congelamiento de los fluidos líquidos, para evitar cambios de fase que la metodología no contempla. Para los fluidos gaseosos tampoco es permitido el cambio de fase, siempre se considerarán en estado gaseoso.
+    
+    \item Se asume que la temperatura de las partículas sólidas es igual a la de los fluidos en los vacíos. Por lo tanto, el proceso de equilibrio de temperatura entre las partículas del suelo o la roca y el fluido no hace parte del modelo.
+    
+    \item No hace parte de este proyecto experiencias de laboratorio para la obtención de datos de entrada de las simulaciones numéricas. Estos datos serán obtenidos de la literatura y se despreciará la incerteza que se pueda tener sobre la calidad de estos datos.
+\end{enumerate}
+
+Este proyecto no pretende resolver todos los vacíos en el conocimiento en cuanto al modelamiento \textit{multifísico} en suelos y rocas.  Por lo tanto, se hace necesario plantear estos alcances y limitaciones de manera clara para poder hacer un análisis posterior más efectivo.
+
+\newpage
+%----------------------------------------------------------------------------------------
+
+
+
+%////////////////////////////////////////////////////////////////////////////////////////
+%----------------------------------------------------------------------------------------
+% SECCIÓN 1.6
+\section{Estructura del documento}~\hypertarget{sec:sec150}{}
+\label{sec:sec150}
+
+Este documento, recoge la fundamentación teórica, la propuesta metodológica y los resultados y conclusiones de la investigación. Se divide en 10 capítulos y una serie de anexos que se detallan en esta sección.\bigskip
+
+
+%Capitulo 2
+En el~\MYhref[blue]{ch:chapter_02}{Capítulo 2} se plantea la teoría base del modelamiento \textit{multifísico}, los modelos físicos involucrados, y los tipos de modelos que se pueden analizar. Se plantea las metodologías para el acoplamiento de estos modelos. Se plantean diversas metodologías, para la solución de ecuaciones diferenciales parciales no-lineales, la solución de sistemas lineales, las diversas metodologías de discretización que se usan en modelamiento \textit{multifísico}. Adicionalmente, se plantea el modelamiento constitutivo en suelos y rocas. Se describen las técnicas innovadoras que se utilizan actualmente en computación científica. Finalmente, se plantea las mejoras a incluir en el nuevo marco metodológico "\textit{\glsdesc{immpm}}". Este capítulo posee mucha información, pero es solo una contextualización de lo que se verá en capítulos posteriores. Se aconseja al lector revisar las referencias que se proponen en el capítulo para mayor información.
+\bigskip
+
+
+%Capitulo 3
+En el~\MYhref[blue]{ch:chapter_03}{Capítulo 3} se formula el modelo matemático \textit{multifísico}, para los modelos de flujo de fluidos, esfuerzo-deformación y transferencia de calor. Se plantean las ecuaciones diferenciales parciales en distintas formulaciones (i.e. hiperbólico y parabólico). Se plantea como se utilizarán los modelos constitutivos en este modelo matemático. Finalmente, se presentará un resumen de las ecuaciones que rigen estos fenómenos físicos.
+\bigskip
+
+
+%Capitulo 4
+En el~\MYhref[blue]{ch:chapter_04}{Capítulo 4} se formula el modelo numérico \textit{multifísico} a partir del modelo matemático del capítulo anterior. Este modelo se formula con la ayuda de los métodos de \textit{Galerkin} y la metodología de acoplamiento \textit{multirate}. Al final del capítulo se presentan los algoritmos formulados: (1) Acoplamiento \textit{multirate}, (2) Linealización de ecuaciones diferenciales no-lineales; (3) Elastoplasticidad tradicional; (4) Solución de sistemas lineales.
+\bigskip
+
+
+%Capitulo 5
+En el~\MYhref[blue]{ch:chapter_05}{Capítulo 5} se plantea e implementa el modelo computacional a partir de lo planteado en el capítulo anterior. Se presenta las características generales de la librería \textit{PoroMediaMultiphysics.jl} hecha en lenguaje Julia. Se presentan las pruebas de verificación y validación de la librería. Finalmente se presentan los resultados de una serie de simulaciones numéricas en casos típicos de la literatura, hechos con esta librería.
+\bigskip
+
+
+%Capitulo 6
+El~\MYhref[blue]{ch:chapter_06}{Capítulo 6} presenta la formulación e implementación de modelos de predicción constitutiva entrenados con redes neuronales artificiales. Hace una descripción detallada de estos modelos hidráulicos, mecánicos y térmicos. Al final del capítulo se hace un análisis de los resultados de estas implementaciones.
+\bigskip
+
+
+%Capitulo 7
+El~\MYhref[blue]{ch:chapter_07}{Capítulo 7} presenta la formulación e implementación de código heterogéneo con ayuda de técnicas de computación paralela basada en \Gls{gpgpu}. Se hace una descripción detallada de estas implementaciones y al final del capítulo se hace un análisis de los resultados en tiempos de simulación.
+\bigskip
+
+
+%Capitulo 8
+En el~\MYhref[blue]{ch:chapter_08}{Capítulo 8} se plantea con detalle el nuevo marco metodológico. Se plantean sus ventajas y desventajas. Además de las diversas consideraciones que se deben tener para aplicarlo tanto a suelos como a rocas. Se presenta el algoritmo general del marco metodológico. Al final se plantean mejoras futuras. 
+\bigskip
+
+
+%Capitulo 9
+En el~\MYhref[blue]{ch:chapter_09}{Capítulo 9} se realizan una serie de simulaciones numéricas de casos de estudio propuestos.
+\bigskip
+
+
+%Capitulo 10
+En el~\MYhref[blue]{ch:chapter_10}{Capítulo 10} se presentan las conclusiones obtenidas con base en todo el análisis realizado en los capítulos anteriores. Se plantean recomendaciones que pueden ser utilizadas para investigaciones futuras en esta área del conocimiento.
+\bigskip
+
+
+%Anexo A
+En el~\MYhref[blue]{ch:anexoA}{Anexo A} se presenta la obtención del modelo general matemático de flujo de fluidos, el modelo de esfuerzo-deformación y el modelo de transferencia de calor en medios porosos en una formulación general.
+\bigskip
+
+%Anexo B
+En el~\MYhref[blue]{ch:anexoB}{Anexo B} se presenta un resumen de las ecuaciones que rigen los modelos matemáticos Termo-Hidro-Mecánico y Hidro-Mecánico.
+\bigskip
+%----------------------------------------------------------------------------------------
